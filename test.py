@@ -1,28 +1,29 @@
+import time
 import pygame
 from pygame.locals import (KEYDOWN, QUIT, K_ESCAPE, K_LEFT, K_RIGHT, K_UP, K_DOWN, K_q, K_d, K_z, K_s)
 pygame.init()
 
-screen = pygame.display.set_mode((1700, 900), pygame.FULLSCREEN)
-screen_size = [1700, 900]
+screen = pygame.display.set_mode((1920, 1080))
+screen_size = [1920, 1080]
 violet = (37, 10, 105)
 
 clock = pygame.time.Clock()
 
 running = True
 
-grid = pygame.Surface((1740, 880))
+grid = pygame.Surface((1900, 970))
 grid.fill("#0B041F")
 grid_pos = [10, 100]
-grid_size = [1740, 880]
+grid_size = [1900, 970]
 
 player = pygame.Surface((25,25))
 player.fill("#0000FF")
-player_pos = [11, 540]
+player_pos = [1885, 585]
 player_size = [25, 25]
 
 player_2 = pygame.Surface((25,25))
 player_2.fill("#CF2F11")
-player_pos_2 = [1724, 540]
+player_pos_2 = [11, 585]
 player_size_2 = [25, 25]
 
 
@@ -37,24 +38,26 @@ executing_lightcycle_movement_z = False
 executing_lightcycle_movement_s = False
 
 
-def lightcycle_movement_negative(player_pos, grid_pos, executing) :
+def lightcycle_movement_negative(player_pos, grid_pos, running) :
     if player_pos <= grid_pos :
-        player_pos = grid_pos
+        running = False
     else :
         player_pos -= 5
 
-    executing = True
-    return executing
+    return player_pos, running
 
-def lightcycle_movement_positive(player_pos, screen_size, grid_size, player_size, adjustment, executing) :
-    if player_pos >= (screen_size - grid_size) + (grid_size - player_size + adjustment) :
-        player_pos = (screen_size - grid_size) + (grid_size - player_size + adjustment)
+def lightcycle_movement_positive(player_pos, screen_size, grid_size, player_size, running) :
+    if player_pos >= (screen_size - grid_size) + (grid_size - player_size - 10) :
+        running = False
     else :
         player_pos += 5
 
-    executing = True
-    return executing
+    return player_pos, running
 
+time.sleep(1)
+
+executing_lightcycle_movement_left = True
+executing_lightcycle_movement_d = True
 
 
 while running :
@@ -72,10 +75,6 @@ while running :
     #---------------------------------------------------------------------------Joueur 1------------------------------------------------------------------------
     #-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    lightcycle_movement_positive(player_pos[0], screen_size[0], grid_size[0], player_size[0], 50, executing_lightcycle_movement_right)
-    if executing_lightcycle_movement_right :
-        lightcycle_movement_positive(player_pos[0], screen_size[0], grid_size[0], player_size[0], 50, executing_lightcycle_movement_right)
-
     #-----------------------------------------------------------------------------LEFT--------------------------------------------------------------------------
     
     if pressed_keys[K_LEFT] :
@@ -83,9 +82,11 @@ while running :
             executing_lightcycle_movement_up = False
             executing_lightcycle_movement_down = False
 
-            lightcycle_movement_negative(player_pos[0], grid_pos[0], executing_lightcycle_movement_left)
+            executing_lightcycle_movement_left = True
+        else :
+            running = False
     if executing_lightcycle_movement_left :
-        lightcycle_movement_negative(player_pos[0], grid_pos[0], executing_lightcycle_movement_left)
+        player_pos[0], running = lightcycle_movement_negative(player_pos[0], grid_pos[0], running)
 
     #-----------------------------------------------------------------------------RIGHT-------------------------------------------------------------------------
     
@@ -94,9 +95,11 @@ while running :
             executing_lightcycle_movement_up = False
             executing_lightcycle_movement_down = False
 
-            lightcycle_movement_positive(player_pos[0], screen_size[0], grid_size[0], player_size[0], 50, executing_lightcycle_movement_right)
+            executing_lightcycle_movement_right = True
+        else :
+            running = False
     if executing_lightcycle_movement_right :
-        lightcycle_movement_positive(player_pos[0], screen_size[0], grid_size[0], player_size[0], 50, executing_lightcycle_movement_right)
+        player_pos[0], running = lightcycle_movement_positive(player_pos[0], screen_size[0], grid_size[0], player_size[0], running)
 
     #------------------------------------------------------------------------------UP---------------------------------------------------------------------------
     
@@ -105,9 +108,11 @@ while running :
             executing_lightcycle_movement_left = False
             executing_lightcycle_movement_right = False
 
-            lightcycle_movement_negative(player_pos[1], grid_pos[1], executing_lightcycle_movement_up)
+            executing_lightcycle_movement_up = True
+        else :
+            running = False
     if executing_lightcycle_movement_up :
-        lightcycle_movement_negative(player_pos[1], grid_pos[1], executing_lightcycle_movement_up)
+        player_pos[1], running = lightcycle_movement_negative(player_pos[1], grid_pos[1], running)
 
     #-----------------------------------------------------------------------------DOWN--------------------------------------------------------------------------
     
@@ -116,56 +121,77 @@ while running :
             executing_lightcycle_movement_left = False
             executing_lightcycle_movement_right = False
 
-            lightcycle_movement_positive(player_pos[1], screen_size[1], grid_size[1], player_size[1], 80, executing_lightcycle_movement_down)
+            executing_lightcycle_movement_down = True
+        else :
+            running = False
     if executing_lightcycle_movement_down :
-        lightcycle_movement_positive(player_pos[1], screen_size[1], grid_size[1], player_size[1], 80, executing_lightcycle_movement_down)
+        player_pos[1], running = lightcycle_movement_positive(player_pos[1], screen_size[1], grid_size[1], player_size[1], running)
 
     #-----------------------------------------------------------------------------------------------------------------------------------------------------------
     #---------------------------------------------------------------------------Joueur 2------------------------------------------------------------------------
     #-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    lightcycle_movement_negative(player_pos_2[0], grid_pos[0], executing_lightcycle_movement_q)
-    if executing_lightcycle_movement_q :
-        lightcycle_movement_negative(player_pos_2[0], grid_pos[0], executing_lightcycle_movement_q)
-
     #-------------------------------------------------------------------------------Q---------------------------------------------------------------------------
     
     if pressed_keys[K_q] :
-        if player_pos_2[0] <= grid_pos[0] :
-            player_pos_2[0] = grid_pos[0]
-        else :
-            player_pos_2[0] -= 5
+        if executing_lightcycle_movement_q == False or executing_lightcycle_movement_d == False :
+            executing_lightcycle_movement_z = False
+            executing_lightcycle_movement_s = False
 
+            executing_lightcycle_movement_q = True
+        else :
+            running = False
+    if executing_lightcycle_movement_q :
+        player_pos_2[0], running = lightcycle_movement_negative(player_pos_2[0], grid_pos[0], running)
     #-------------------------------------------------------------------------------D---------------------------------------------------------------------------
     
     if pressed_keys[K_d] :
-        if player_pos_2[0] >= (screen_size[0] - grid_size[0]) + (grid_size[0] - player_size_2[0] + 50) :
-            player_pos_2[0] = (screen_size[0] - grid_size[0]) + (grid_size[0] - player_size_2[0] + 50)
+        if executing_lightcycle_movement_q == False or executing_lightcycle_movement_d == False :
+            executing_lightcycle_movement_z = False
+            executing_lightcycle_movement_s = False
+
+            executing_lightcycle_movement_d = True
         else :
-            player_pos_2[0] += 5
+            running = False
+    if executing_lightcycle_movement_d :
+        player_pos_2[0], running = lightcycle_movement_positive(player_pos_2[0], screen_size[0], grid_size[0], player_size_2[0], running)
 
     #-------------------------------------------------------------------------------Z---------------------------------------------------------------------------
 
     if pressed_keys[K_z] :
-        if player_pos_2[1] <= grid_pos[1] :
-            player_pos_2[1] = grid_pos[1]
+        if executing_lightcycle_movement_z == False or executing_lightcycle_movement_s == False :
+            executing_lightcycle_movement_q = False
+            executing_lightcycle_movement_d = False
+
+            executing_lightcycle_movement_z = True
         else :
-            player_pos_2[1] -= 5
+            running = False
+    if executing_lightcycle_movement_z :
+        player_pos_2[1], running = lightcycle_movement_negative(player_pos_2[1], grid_pos[1], running)
 
     #-------------------------------------------------------------------------------S---------------------------------------------------------------------------
     
     if pressed_keys[K_s] :
-        if player_pos_2[1] >= (screen_size[1] - grid_size[1]) + (grid_size[1] - player_size_2[1] + 80) :
-            player_pos_2[1] = (screen_size[1] - grid_size[1]) + (grid_size[1] - player_size_2[1] + 80)
+        if executing_lightcycle_movement_z == False or executing_lightcycle_movement_s == False :
+            executing_lightcycle_movement_q = False
+            executing_lightcycle_movement_d = False
+
+            executing_lightcycle_movement_s = True
         else :
-            player_pos_2[1] += 5
+            running = False
+    if executing_lightcycle_movement_s :
+        player_pos_2[1], running = lightcycle_movement_positive(player_pos_2[1], screen_size[1], grid_size[1], player_size_2[1], running)
 
 
-
-    if player_pos[0] + player_size[0] == player_pos_2 and player_pos[1] == player_pos_2[1] :
+    if player_pos_2[0] == player_pos[0] + player_size[0] and player_pos_2[1] == player_pos[1] :
         running = False
-    if player_pos[0] == player_pos_2[0] + player_size_2[0] and player_pos[1] == player_pos_2[1] :
+    if player_pos[0] == player_pos_2[0] + player_size_2[0] and player_pos_2[1] == player_pos[1] :
         running = False
+    if player_pos_2[1] == player_pos[1] + player_size[1] and player_pos_2[0] == player_pos[0] :
+        running = False
+    if player_pos[1] == player_pos_2[1] + player_size_2[1] and player_pos_2[0] == player_pos[0] :
+        running = False
+
     
     
     screen.fill(violet)
