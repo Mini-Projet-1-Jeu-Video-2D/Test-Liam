@@ -183,14 +183,23 @@ while running :
         player_pos_2[1], running = lightcycle_movement_positive(player_pos_2[1], screen_size[1], grid_size[1], player_size_2[1], running)
 
 
-    if player_pos_2[0] == player_pos[0] + player_size[0] and player_pos_2[1] == player_pos[1] :
-        running = False
-    if player_pos[0] == player_pos_2[0] + player_size_2[0] and player_pos_2[1] == player_pos[1] :
-        running = False
-    if player_pos_2[1] == player_pos[1] + player_size[1] and player_pos_2[0] == player_pos[0] :
-        running = False
-    if player_pos[1] == player_pos_2[1] + player_size_2[1] and player_pos_2[0] == player_pos[0] :
-        running = False
+    #------------------------------------------------------------------------COLLISIONS-------------------------------------------------------------------------
+
+    if executing_lightcycle_movement_d and executing_lightcycle_movement_left :
+        if player_pos_2[0] >= player_pos[0] - player_size[0] and player_pos_2[1] >= player_pos[1] - player_size[1] :
+                running = False
+    
+    if executing_lightcycle_movement_q and executing_lightcycle_movement_right :
+        if player_pos[0] >= player_pos_2[0] + player_size_2[0] and player_pos_2[1] == player_pos[1] :
+            running = False
+    
+    if executing_lightcycle_movement_s and executing_lightcycle_movement_up :
+        if player_pos_2[1] >= player_pos[1] + player_size[1] and player_pos_2[0] == player_pos[0] :
+            running = False
+    
+    if executing_lightcycle_movement_z and executing_lightcycle_movement_down :
+        if player_pos[1] >= player_pos_2[1] + player_size_2[1] and player_pos_2[0] == player_pos[0] :
+            running = False
 
     
     
