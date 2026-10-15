@@ -19,32 +19,56 @@ grid_size = [1900, 970]
 player = pygame.Surface((25,25))
 player.fill("#CF2F11")
 player_pos = [11, 585]
+player_pos_instant = [0, 0]
 player_size = [25, 25]
 
 player_2 = pygame.Surface((25,25))
 player_2.fill("#0000FF")
 player_pos_2 = [1885, 585]
+player_pos_2_instant = [0, 0]
 player_size_2 = [25, 25]
 
-traînée_x_1 = pygame.Surface((25,5))
-traînée_x_1.fill("#F5FF00")
-traînée_x_1_pos = [player_pos[0], player_pos[1] + 10]
-traînée_x_1_size = [25, 5]
+traînées_player = {}
 
-traînée_y_1 = pygame.Surface((5,25))
-traînée_y_1.fill("#F5FF00")
-traînée_y_1_pos = [player_pos[0] + 10, player_pos[1]]
-traînée_y_1_size = [5, 25]
+traînée_q = pygame.Surface((5,5))
+traînée_q.fill("#F5FF00")
+traînée_q_pos = [player_pos[0], player_pos[1] + 10]
+traînée_q_size = [5, 5]
 
-traînée_x_2 = pygame.Surface((25,5))
-traînée_x_2.fill("#F5FF00")
-traînée_x_2_pos = [player_pos_2[0], player_pos_2[1] + 10]
-traînée_x_2_size = [25, 5]
+traînée_d = pygame.Surface((5,5))
+traînée_d.fill("#F5FF00")
+traînée_d_pos = [player_pos[0], player_pos[1] + 10]
+traînée_d_size = [5, 5]
 
-traînée_y_2 = pygame.Surface((5,25))
-traînée_y_2.fill("#F5FF00")
-traînée_y_2_pos = [player_pos_2[0] + 10, player_pos_2[1]]
-traînée_y_2_size = [5, 25]
+traînée_z = pygame.Surface((5,5))
+traînée_z.fill("#F5FF00")
+traînée_z_pos = [player_pos[0] + 10, player_pos[1]]
+traînée_z_size = [5, 5]
+
+traînée_s = pygame.Surface((5,5))
+traînée_s.fill("#F5FF00")
+traînée_s_pos = [player_pos[0] + 10, player_pos[1]]
+traînée_s_size = [5, 5]
+
+traînée_left = pygame.Surface((5,5))
+traînée_left.fill("#F5FF00")
+traînée_left_pos = [player_pos_2[0], player_pos_2[1] + 10]
+traînée_left_size = [5, 5]
+
+traînée_right = pygame.Surface((5,5))
+traînée_right.fill("#F5FF00")
+traînée_right_pos = [player_pos_2[0], player_pos_2[1] + 10]
+traînée_right_size = [5, 5]
+
+traînée_up = pygame.Surface((5,5))
+traînée_up.fill("#F5FF00")
+traînée_up_pos = [player_pos_2[0] + 10, player_pos_2[1]]
+traînée_up_size = [5, 5]
+
+traînée_down = pygame.Surface((5,5))
+traînée_down.fill("#F5FF00")
+traînée_down_pos = [player_pos_2[0] + 10, player_pos_2[1]]
+traînée_down_size = [5, 5]
 
 
 executing_lightcycle_movement_left = False
@@ -74,10 +98,6 @@ def lightcycle_movement_positive(player_pos, screen_size, grid_size, player_size
 
     return player_pos, running
 
-def traînées(executing, executing_2, traînée, traînée_pos) :
-    if executing or executing_2:
-        screen.blit(traînée, traînée_pos)
-
 time.sleep(1)
 
 executing_lightcycle_movement_left = True
@@ -104,7 +124,7 @@ while running :
 
     #-------------------------------------------------------------------------------Q---------------------------------------------------------------------------
     
-    if pressed_keys[K_q] :
+    if pressed_keys[K_q] and not pressed_keys[K_d] and not pressed_keys[K_z] and not pressed_keys[K_s] :
         if executing_lightcycle_movement_q == False or executing_lightcycle_movement_d == False :
             executing_lightcycle_movement_z = False
             executing_lightcycle_movement_s = False
@@ -114,9 +134,10 @@ while running :
             running = False
     if executing_lightcycle_movement_q :
         player_pos[0], running = lightcycle_movement_negative(player_pos[0], grid_pos[0], running)
+        player_pos_instant = [player_pos[0], player_pos[1]]
     #-------------------------------------------------------------------------------D---------------------------------------------------------------------------
     
-    if pressed_keys[K_d] :
+    if pressed_keys[K_d] and not pressed_keys[K_q] and not pressed_keys[K_z] and not pressed_keys[K_s] :
         if executing_lightcycle_movement_q == False or executing_lightcycle_movement_d == False :
             executing_lightcycle_movement_z = False
             executing_lightcycle_movement_s = False
@@ -126,10 +147,11 @@ while running :
             running = False
     if executing_lightcycle_movement_d :
         player_pos[0], running = lightcycle_movement_positive(player_pos[0], screen_size[0], grid_size[0], player_size[0], running)
+        player_pos_instant = [player_pos[0], player_pos[1]]
 
     #-------------------------------------------------------------------------------Z---------------------------------------------------------------------------
 
-    if pressed_keys[K_z] :
+    if pressed_keys[K_z] and not pressed_keys[K_q] and not pressed_keys[K_d] and not pressed_keys[K_s] :
         if executing_lightcycle_movement_z == False or executing_lightcycle_movement_s == False :
             executing_lightcycle_movement_q = False
             executing_lightcycle_movement_d = False
@@ -139,10 +161,11 @@ while running :
             running = False
     if executing_lightcycle_movement_z :
         player_pos[1], running = lightcycle_movement_negative(player_pos[1], grid_pos[1], running)
+        player_pos_instant = [player_pos[0], player_pos[1]]
 
     #-------------------------------------------------------------------------------S---------------------------------------------------------------------------
     
-    if pressed_keys[K_s] :
+    if pressed_keys[K_s] and not pressed_keys[K_q] and not pressed_keys[K_d] and not pressed_keys[K_z] :
         if executing_lightcycle_movement_z == False or executing_lightcycle_movement_s == False :
             executing_lightcycle_movement_q = False
             executing_lightcycle_movement_d = False
@@ -152,6 +175,7 @@ while running :
             running = False
     if executing_lightcycle_movement_s :
         player_pos[1], running = lightcycle_movement_positive(player_pos[1], screen_size[1], grid_size[1], player_size[1], running)
+        player_pos_instant = [player_pos[0], player_pos[1]]
 
 
     #-----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -160,7 +184,7 @@ while running :
 
     #-----------------------------------------------------------------------------LEFT--------------------------------------------------------------------------
     
-    if pressed_keys[K_LEFT] :
+    if pressed_keys[K_LEFT] and not pressed_keys[K_RIGHT] and not pressed_keys[K_UP] and not pressed_keys[K_DOWN] :
         if executing_lightcycle_movement_left == False or executing_lightcycle_movement_right == False :
             executing_lightcycle_movement_up = False
             executing_lightcycle_movement_down = False
@@ -170,10 +194,11 @@ while running :
             running = False
     if executing_lightcycle_movement_left :
         player_pos_2[0], running = lightcycle_movement_negative(player_pos_2[0], grid_pos[0], running)
+        player_pos_2_instant = [player_pos_2[0], player_pos_2[1]]
 
     #-----------------------------------------------------------------------------RIGHT-------------------------------------------------------------------------
     
-    if pressed_keys[K_RIGHT] :
+    if pressed_keys[K_RIGHT] and not pressed_keys[K_LEFT] and not pressed_keys[K_UP] and not pressed_keys[K_DOWN] :
         if executing_lightcycle_movement_left == False or executing_lightcycle_movement_right == False :
             executing_lightcycle_movement_up = False
             executing_lightcycle_movement_down = False
@@ -183,10 +208,11 @@ while running :
             running = False
     if executing_lightcycle_movement_right :
         player_pos_2[0], running = lightcycle_movement_positive(player_pos_2[0], screen_size[0], grid_size[0], player_size_2[0], running)
+        player_pos_2_instant = [player_pos_2[0], player_pos_2[1]]
 
     #------------------------------------------------------------------------------UP---------------------------------------------------------------------------
     
-    if pressed_keys[K_UP] :
+    if pressed_keys[K_UP] and not pressed_keys[K_LEFT] and not pressed_keys[K_RIGHT] and not pressed_keys[K_DOWN] :
         if executing_lightcycle_movement_up == False or executing_lightcycle_movement_down == False :
             executing_lightcycle_movement_left = False
             executing_lightcycle_movement_right = False
@@ -196,10 +222,11 @@ while running :
             running = False
     if executing_lightcycle_movement_up :
         player_pos_2[1], running = lightcycle_movement_negative(player_pos_2[1], grid_pos[1], running)
+        player_pos_2_instant = [player_pos_2[0], player_pos_2[1]]
 
     #-----------------------------------------------------------------------------DOWN--------------------------------------------------------------------------
     
-    if pressed_keys[K_DOWN] :
+    if pressed_keys[K_DOWN] and not pressed_keys[K_LEFT] and not pressed_keys[K_RIGHT] and not pressed_keys[K_UP] :
         if executing_lightcycle_movement_up == False or executing_lightcycle_movement_down == False :
             executing_lightcycle_movement_left = False
             executing_lightcycle_movement_right = False
@@ -209,6 +236,7 @@ while running :
             running = False
     if executing_lightcycle_movement_down :
         player_pos_2[1], running = lightcycle_movement_positive(player_pos_2[1], screen_size[1], grid_size[1], player_size_2[1], running)
+        player_pos_2_instant = [player_pos_2[0], player_pos_2[1]]
 
 
     #-----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -236,11 +264,17 @@ while running :
     #------------------------------------------------------------------------TRAINEES---------------------------------------------------------------------------
     #-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    traînées(executing_lightcycle_movement_left, executing_lightcycle_movement_right, traînée_x_1, traînée_x_1_pos)
-    traînées(executing_lightcycle_movement_up, executing_lightcycle_movement_down, traînée_y_1, traînée_y_1_pos)
-    traînées(executing_lightcycle_movement_q, executing_lightcycle_movement_d, traînée_x_2, traînée_x_2_pos)
-    traînées(executing_lightcycle_movement_z, executing_lightcycle_movement_s, traînée_y_2, traînée_y_2_pos)
-
+    if executing_lightcycle_movement_q :
+        traînée_q = pygame.Surface((player_pos_instant[0] - 10,5))
+        traînée_q.fill("#F5FF00")
+        traînée_q_size = [player_pos_instant[0] - 10,5]
+        screen.blit(traînée_q, traînée_q_pos)
+    
+    if executing_lightcycle_movement_d :
+        traînée_d = pygame.Surface((player_pos_instant[0] - 10,5))
+        traînée_d.fill("#F5FF00")
+        traînée_d_size = [player_pos_instant[0] - 10,5]
+        screen.blit(traînée_d, traînée_d_pos)
 
     screen.blit(player, player_pos)
     screen.blit(player_2, player_pos_2)
