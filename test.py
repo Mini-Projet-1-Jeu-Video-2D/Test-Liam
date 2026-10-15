@@ -28,12 +28,19 @@ player_pos_2 = [1885, 585]
 player_pos_2_instant = [0, 0]
 player_size_2 = [25, 25]
 
-traînées_player = {}
+traînées_q = {
+    "type": pygame.Surface((5,5)),
+    "color": "#F5FF00",
+    "pos_x": player_pos[0],
+    "pos_y": player_pos[1] + 10,
+    "size_x": 5,
+    "size_x": 5
+}
 
-traînée_q = pygame.Surface((5,5))
-traînée_q.fill("#F5FF00")
-traînée_q_pos = [player_pos[0], player_pos[1] + 10]
-traînée_q_size = [5, 5]
+traînée_q = traînées_q["type"]
+traînée_q.fill(traînées_q["color"])
+traînée_q_pos = [traînées_q["pos_x"], traînées_q["pos_y"]]
+traînée_q_size = [traînées_q["size_x"], traînées_q["size_x"]]
 
 traînée_d = pygame.Surface((5,5))
 traînée_d.fill("#F5FF00")
