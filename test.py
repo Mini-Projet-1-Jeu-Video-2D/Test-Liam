@@ -28,55 +28,99 @@ player_pos_2 = [1885, 585]
 player_pos_2_instant = [0, 0]
 player_size_2 = [25, 25]
 
-traînées_q = {
-    "type": pygame.Surface((5,5)),
+traînées = {
+    "type_x": 5,
+    "type_y": 5,
     "color": "#F5FF00",
     "pos_x": player_pos[0],
-    "pos_y": player_pos[1] + 10,
+    "pos_y": player_pos[1],
     "size_x": 5,
-    "size_x": 5
+    "size_y": 5
 }
 
-traînée_q = traînées_q["type"]
-traînée_q.fill(traînées_q["color"])
-traînée_q_pos = [traînées_q["pos_x"], traînées_q["pos_y"]]
-traînée_q_size = [traînées_q["size_x"], traînées_q["size_x"]]
+traînée_q = {}
 
-traînée_d = pygame.Surface((5,5))
-traînée_d.fill("#F5FF00")
-traînée_d_pos = [player_pos[0], player_pos[1] + 10]
-traînée_d_size = [5, 5]
+t_q = pygame.Surface((traînées["type_x"], traînées["type_y"]))
+t_q.fill(traînées["color"])
+t_q_pos = [traînées["pos_x"], traînées["pos_y"]]
+t_q_size = [traînées["size_x"], traînées["size_y"]]
 
-traînée_z = pygame.Surface((5,5))
-traînée_z.fill("#F5FF00")
-traînée_z_pos = [player_pos[0] + 10, player_pos[1]]
-traînée_z_size = [5, 5]
+t_d = pygame.Surface((traînées["type_x"], traînées["type_y"]))
+t_d.fill(traînées["color"])
+t_d_pos = [traînées["pos_x"], traînées["pos_y"]]
+t_d_size = [traînées["size_x"], traînées["size_y"]]
 
-traînée_s = pygame.Surface((5,5))
-traînée_s.fill("#F5FF00")
-traînée_s_pos = [player_pos[0] + 10, player_pos[1]]
-traînée_s_size = [5, 5]
+t_z = pygame.Surface((5,5))
+t_z.fill("#F5FF00")
+t_z_pos = [player_pos[0] + 10, player_pos[1]]
+t_z_size = [5, 5]
 
-traînée_left = pygame.Surface((5,5))
-traînée_left.fill("#F5FF00")
-traînée_left_pos = [player_pos_2[0], player_pos_2[1] + 10]
-traînée_left_size = [5, 5]
+t_s = pygame.Surface((5,5))
+t_s.fill("#F5FF00")
+t_s_pos = [player_pos[0] + 10, player_pos[1]]
+t_s_size = [5, 5]
 
-traînée_right = pygame.Surface((5,5))
-traînée_right.fill("#F5FF00")
-traînée_right_pos = [player_pos_2[0], player_pos_2[1] + 10]
-traînée_right_size = [5, 5]
+t_left = pygame.Surface((5,5))
+t_left.fill("#F5FF00")
+t_left_pos = [player_pos_2[0], player_pos_2[1] + 10]
+t_left_size = [5, 5]
 
-traînée_up = pygame.Surface((5,5))
-traînée_up.fill("#F5FF00")
-traînée_up_pos = [player_pos_2[0] + 10, player_pos_2[1]]
-traînée_up_size = [5, 5]
+t_right = pygame.Surface((5,5))
+t_right.fill("#F5FF00")
+t_right_pos = [player_pos_2[0], player_pos_2[1] + 10]
+t_right_size = [5, 5]
 
-traînée_down = pygame.Surface((5,5))
-traînée_down.fill("#F5FF00")
-traînée_down_pos = [player_pos_2[0] + 10, player_pos_2[1]]
-traînée_down_size = [5, 5]
+t_up = pygame.Surface((5,5))
+t_up.fill("#F5FF00")
+t_up_pos = [player_pos_2[0] + 10, player_pos_2[1]]
+t_up_size = [5, 5]
 
+t_down = pygame.Surface((5,5))
+t_down.fill("#F5FF00")
+t_down_pos = [player_pos_2[0] + 10, player_pos_2[1]]
+t_down_size = [5, 5]
+
+traînées_finales = []
+
+def création_traînée_GAUCHE(executing, traînées, traînée, player_pos_instant, player_pos_0, player_pos_1, t, t_pos, t_size, traînées_finales) :
+    if executing :
+        traînée_q = traînées_q.copy()
+        traînée_q = {
+            "type_x": player_pos_instant - player_pos_0 + 25,
+            "type_y": 5,
+            "color": "#F5FF00",
+            "pos_x": player_pos_0 + 25,
+            "pos_y": player_pos_1 + 10,
+            "size_x": player_pos_instant - (player_pos_0 + 25),
+            "size_y": 5
+        }
+
+        t = pygame.Surface((traînée["type_x"], traînée["type_y"]))
+        t.fill(traînée["color"])
+        t_pos = [traînée["pos_x"], traînée["pos_y"]]
+        t_size = [traînée["size_x"], traînée["size_y"]]
+    else :
+        traînées_finales.append(traînée)
+
+def création_traînée_DROITE(executing, traînées, traînée, player_pos_instant_0, player_pos_instant_1, player_pos, t, t_pos, t_size, traînées_finales)
+    if executing :
+        traînée = traînées.copy()
+        traînée = {
+            "type_x": player_pos - player_pos_instant_0,
+            "type_y": 5,
+            "color": "#F5FF00",
+            "pos_x": player_pos_instant_0,
+            "pos_y": player_pos_instant_1 + 10,
+            "size_x": player_pos - player_pos_instant_0,
+            "size_y": 5
+        }
+
+        t = pygame.Surface((traînée["type_x"], traînée["type_y"]))
+        t.fill(traînée["color"])
+        t_pos = [traînée["pos_x"], traînée["pos_y"]]
+        t_size = [traînée["size_x"], traînée["size_y"]]
+    else :
+        traînées_finales.append(traînée)
 
 executing_lightcycle_movement_left = False
 executing_lightcycle_movement_right = False
@@ -107,8 +151,13 @@ def lightcycle_movement_positive(player_pos, screen_size, grid_size, player_size
 
 time.sleep(1)
 
+
 executing_lightcycle_movement_left = True
 executing_lightcycle_movement_d = True
+
+player_pos_instant = [player_pos[0], player_pos[1]]
+player_pos__2instant = [player_pos_2[0], player_pos_2[1]]
+
 
 
 while running :
@@ -137,11 +186,13 @@ while running :
             executing_lightcycle_movement_s = False
 
             executing_lightcycle_movement_q = True
+
+            player_pos_instant = [player_pos[0], player_pos[1]]
         else :
             running = False
     if executing_lightcycle_movement_q :
         player_pos[0], running = lightcycle_movement_negative(player_pos[0], grid_pos[0], running)
-        player_pos_instant = [player_pos[0], player_pos[1]]
+        
     #-------------------------------------------------------------------------------D---------------------------------------------------------------------------
     
     if pressed_keys[K_d] and not pressed_keys[K_q] and not pressed_keys[K_z] and not pressed_keys[K_s] :
@@ -150,11 +201,12 @@ while running :
             executing_lightcycle_movement_s = False
 
             executing_lightcycle_movement_d = True
+
+            player_pos_instant = [player_pos[0], player_pos[1]]
         else :
             running = False
     if executing_lightcycle_movement_d :
         player_pos[0], running = lightcycle_movement_positive(player_pos[0], screen_size[0], grid_size[0], player_size[0], running)
-        player_pos_instant = [player_pos[0], player_pos[1]]
 
     #-------------------------------------------------------------------------------Z---------------------------------------------------------------------------
 
@@ -271,17 +323,135 @@ while running :
     #------------------------------------------------------------------------TRAINEES---------------------------------------------------------------------------
     #-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    if executing_lightcycle_movement_q :
-        traînée_q = pygame.Surface((player_pos_instant[0] - 10,5))
-        traînée_q.fill("#F5FF00")
-        traînée_q_size = [player_pos_instant[0] - 10,5]
-        screen.blit(traînée_q, traînée_q_pos)
+    #---------------------------------------------------------------------------Joueur 1------------------------------------------------------------------------
+
+    #-------------------------------------------------------------------------------Q---------------------------------------------------------------------------
     
-    if executing_lightcycle_movement_d :
-        traînée_d = pygame.Surface((player_pos_instant[0] - 10,5))
-        traînée_d.fill("#F5FF00")
-        traînée_d_size = [player_pos_instant[0] - 10,5]
-        screen.blit(traînée_d, traînée_d_pos)
+    création_traînée_GAUCHE(executing_lightcycle_movement_q, traînées, traînée_q, player_pos_instant[0], player_pos[0], player_pos[1], t_q, t_q_pos, t_q_size, traînées_finales)
+        
+    #-------------------------------------------------------------------------------D---------------------------------------------------------------------------
+    
+
+    #-------------------------------------------------------------------------------Z---------------------------------------------------------------------------
+
+    if executing_lightcycle_movement_q :
+        traînée_q = traînées_q.copy()
+        traînée_q = {
+            "type_x": player_pos_instant[0] - player_pos[0] + 25,
+            "type_y": 5,
+            "color": "#F5FF00",
+            "pos_x": player_pos[0] + 25,
+            "pos_y": player_pos[1] + 10,
+            "size_x": player_pos_instant[0] - (player_pos[0] + 25),
+            "size_y": 5
+        }
+
+        t_q = pygame.Surface((traînée_q["type_x"], traînée_q["type_y"]))
+        t_q.fill(traînée_q["color"])
+        t_q_pos = [traînée_q["pos_x"], traînée_q["pos_y"]]
+        t_q_size = [traînée_q["size_x"], traînée_q["size_y"]]
+
+    #-------------------------------------------------------------------------------S---------------------------------------------------------------------------
+    
+    if executing_lightcycle_movement_q :
+        traînée_q = traînées_q.copy()
+        traînée_q = {
+            "type_x": player_pos_instant[0] - player_pos[0] + 25,
+            "type_y": 5,
+            "color": "#F5FF00",
+            "pos_x": player_pos[0] + 25,
+            "pos_y": player_pos[1] + 10,
+            "size_x": player_pos_instant[0] - (player_pos[0] + 25),
+            "size_y": 5
+        }
+
+        t_q = pygame.Surface((traînée_q["type_x"], traînée_q["type_y"]))
+        t_q.fill(traînée_q["color"])
+        t_q_pos = [traînée_q["pos_x"], traînée_q["pos_y"]]
+        t_q_size = [traînée_q["size_x"], traînée_q["size_y"]]
+
+
+    #---------------------------------------------------------------------------Joueur 2------------------------------------------------------------------------
+
+    #-----------------------------------------------------------------------------LEFT--------------------------------------------------------------------------
+    
+    if executing_lightcycle_movement_q :
+        traînée_q = traînées_q.copy()
+        traînée_q = {
+            "type_x": player_pos_instant[0] - player_pos[0] + 25,
+            "type_y": 5,
+            "color": "#F5FF00",
+            "pos_x": player_pos[0] + 25,
+            "pos_y": player_pos[1] + 10,
+            "size_x": player_pos_instant[0] - (player_pos[0] + 25),
+            "size_y": 5
+        }
+
+        t_q = pygame.Surface((traînée_q["type_x"], traînée_q["type_y"]))
+        t_q.fill(traînée_q["color"])
+        t_q_pos = [traînée_q["pos_x"], traînée_q["pos_y"]]
+        t_q_size = [traînée_q["size_x"], traînée_q["size_y"]]
+
+    #-----------------------------------------------------------------------------RIGHT-------------------------------------------------------------------------
+    
+    if executing_lightcycle_movement_q :
+        traînée_q = traînées_q.copy()
+        traînée_q = {
+            "type_x": player_pos_instant[0] - player_pos[0] + 25,
+            "type_y": 5,
+            "color": "#F5FF00",
+            "pos_x": player_pos[0] + 25,
+            "pos_y": player_pos[1] + 10,
+            "size_x": player_pos_instant[0] - (player_pos[0] + 25),
+            "size_y": 5
+        }
+
+        t_q = pygame.Surface((traînée_q["type_x"], traînée_q["type_y"]))
+        t_q.fill(traînée_q["color"])
+        t_q_pos = [traînée_q["pos_x"], traînée_q["pos_y"]]
+        t_q_size = [traînée_q["size_x"], traînée_q["size_y"]]
+
+    #------------------------------------------------------------------------------UP---------------------------------------------------------------------------
+    
+    if executing_lightcycle_movement_q :
+        traînée_q = traînées_q.copy()
+        traînée_q = {
+            "type_x": player_pos_instant[0] - player_pos[0] + 25,
+            "type_y": 5,
+            "color": "#F5FF00",
+            "pos_x": player_pos[0] + 25,
+            "pos_y": player_pos[1] + 10,
+            "size_x": player_pos_instant[0] - (player_pos[0] + 25),
+            "size_y": 5
+        }
+
+        t_q = pygame.Surface((traînée_q["type_x"], traînée_q["type_y"]))
+        t_q.fill(traînée_q["color"])
+        t_q_pos = [traînée_q["pos_x"], traînée_q["pos_y"]]
+        t_q_size = [traînée_q["size_x"], traînée_q["size_y"]]
+
+    #-----------------------------------------------------------------------------DOWN--------------------------------------------------------------------------
+    
+    if executing_lightcycle_movement_q :
+        traînée_q = traînées_q.copy()
+        traînée_q = {
+            "type_x": player_pos_instant[0] - player_pos[0] + 25,
+            "type_y": 5,
+            "color": "#F5FF00",
+            "pos_x": player_pos[0] + 25,
+            "pos_y": player_pos[1] + 10,
+            "size_x": player_pos_instant[0] - (player_pos[0] + 25),
+            "size_y": 5
+        }
+
+        t_q = pygame.Surface((traînée_q["type_x"], traînée_q["type_y"]))
+        t_q.fill(traînée_q["color"])
+        t_q_pos = [traînée_q["pos_x"], traînée_q["pos_y"]]
+        t_q_size = [traînée_q["size_x"], traînée_q["size_y"]]
+
+    for i in traînées_finales :
+        screen.blit([pygame.Surface((i["type_x"], i["type_y"]))], [i["pos_x"], i["pos_y"]])
+
 
     screen.blit(player, player_pos)
     screen.blit(player_2, player_pos_2)
