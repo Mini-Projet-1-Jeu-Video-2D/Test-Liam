@@ -3,28 +3,30 @@ import pygame
 from pygame.locals import (KEYDOWN, QUIT, K_ESCAPE, K_LEFT, K_RIGHT, K_UP, K_DOWN, K_q, K_d, K_z, K_s)
 pygame.init()
 
-screen = pygame.display.set_mode((1920, 1080))
-screen_size = [1920, 1080]
+resolution = pygame.display.Info()
+
+screen = pygame.display.set_mode((resolution.current_w, resolution.current_h))
+screen_size = [resolution.current_w, resolution.current_h]
 violet = (37, 10, 105)
 
 clock = pygame.time.Clock()
 
 running = True
 
-grid = pygame.Surface((1900, 970))
+grid = pygame.Surface((screen_size[0] - 20, screen_size[1] - 110))
 grid.fill("#0B041F")
 grid_pos = [10, 100]
-grid_size = [1900, 970]
+grid_size = [screen_size[0] - 20, screen_size[1] - 110]
 
 player = pygame.Surface((25,25))
 player.fill("#CF2F11")
-player_pos = [11, 585]
+player_pos = [grid_pos[0], grid_size[1] / 2 + 100]
 player_pos_instant = [player_pos[0], player_pos[1]]
 player_size = [25, 25]
 
 player_2 = pygame.Surface((25,25))
 player_2.fill("#0000FF")
-player_pos_2 = [1885, 585]
+player_pos_2 = [grid_pos[0] + grid_size[0] - 25, grid_size[1] / 2 + 100]
 player_pos_2_instant = [player_pos_2[0], player_pos_2[1]]
 player_size_2 = [25, 25]
 
@@ -74,28 +76,36 @@ t_down_size = []
 
 traînées_finales_q = []
 traînées_finales_pos_q = []
+traînées_finales_size_q = []
 
 traînées_finales_d = []
 traînées_finales_pos_d = []
+traînées_finales_size_d = []
 
 traînées_finales_z = []
 traînées_finales_pos_z = []
+traînées_finales_size_z = []
 
 traînées_finales_s = []
 traînées_finales_pos_s = []
+traînées_finales_size_s = []
 
 
 traînées_finales_left = []
 traînées_finales_pos_left = []
+traînées_finales_size_left = []
 
 traînées_finales_right = []
 traînées_finales_pos_right = []
+traînées_finales_size_right = []
 
 traînées_finales_up = []
 traînées_finales_pos_up = []
+traînées_finales_size_up = []
 
 traînées_finales_down = []
 traînées_finales_pos_down = []
+traînées_finales_size_down = []
 
 
 executing_lightcycle_movement_q = False
@@ -127,7 +137,7 @@ def lightcycle_movement_positive(player_pos, screen_size, grid_size, player_size
     return player_pos, running
 
 
-def création_traînée_GAUCHE(executing, traînées, player_pos_instant_0, player_pos_0, player_pos_1, traînées_finales, traînées_finales_pos) :
+def création_traînée_GAUCHE(executing, traînées, player_pos_instant_0, player_pos_0, player_pos_1, traînées_finales, traînées_finales_pos, traînées_finales_size) :
     t = None
     t_pos = [5, 5]
     t_size = [5, 5]
@@ -151,10 +161,11 @@ def création_traînée_GAUCHE(executing, traînées, player_pos_instant_0, play
     if t is not None :
         traînées_finales.append(t)
         traînées_finales_pos.append(t_pos)
+        traînées_finales_size.append(t_size)
 
-    return t_pos, t_size, traînées_finales, traînées_finales_pos
+    return traînées_finales, traînées_finales_pos, traînées_finales_size
 
-def création_traînée_DROITE(executing, traînées, player_pos_instant_0, player_pos_instant_1, player_pos_0, traînées_finales, traînées_finales_pos) :
+def création_traînée_DROITE(executing, traînées, player_pos_instant_0, player_pos_instant_1, player_pos_0, traînées_finales, traînées_finales_pos, traînées_finales_size) :
     t = None
     t_pos = [5, 5]
     t_size = [5, 5]
@@ -178,10 +189,11 @@ def création_traînée_DROITE(executing, traînées, player_pos_instant_0, play
     if t is not None :
         traînées_finales.append(t)
         traînées_finales_pos.append(t_pos)
+        traînées_finales_size.append(t_size)
 
-    return t_pos, t_size, traînées_finales, traînées_finales_pos
+    return traînées_finales, traînées_finales_pos, traînées_finales_size
 
-def création_traînées_HAUT(executing, traînées, player_pos_instant_1, player_pos_1, player_pos_0, traînées_finales, traînées_finales_pos) :
+def création_traînées_HAUT(executing, traînées, player_pos_instant_1, player_pos_1, player_pos_0, traînées_finales, traînées_finales_pos, traînées_finales_size) :
     t = None
     t_pos = [5, 5]
     t_size = [5, 5]
@@ -194,8 +206,8 @@ def création_traînées_HAUT(executing, traînées, player_pos_instant_1, playe
             "color": "#F5FF00",
             "pos_x": player_pos_0 + 10,
             "pos_y": player_pos_1 + 10,
-            "size_x": player_pos_instant_1 - player_pos_1 + 5,
-            "size_y": 5
+            "size_x": 5,
+            "size_y": player_pos_instant_1 - player_pos_1 + 5
         }
 
         t = pygame.Surface((traînée["type_x"], traînée["type_y"]))
@@ -205,10 +217,11 @@ def création_traînées_HAUT(executing, traînées, player_pos_instant_1, playe
     if t is not None :
         traînées_finales.append(t)
         traînées_finales_pos.append(t_pos)
+        traînées_finales_size.append(t_size)
 
-    return t_pos, t_size, traînées_finales, traînées_finales_pos
+    return traînées_finales, traînées_finales_pos, traînées_finales_size
 
-def création_traînées_BAS(executing, traînées, player_pos_1, player_pos_instant_1, player_pos_instant_0, traînées_finales, traînées_finales_pos) :
+def création_traînées_BAS(executing, traînées, player_pos_1, player_pos_instant_1, player_pos_instant_0, traînées_finales, traînées_finales_pos, traînées_finales_size) :
     t = None
     t_pos = [5, 5]
     t_size = [5, 5]
@@ -221,8 +234,8 @@ def création_traînées_BAS(executing, traînées, player_pos_1, player_pos_ins
             "color": "#F5FF00",
             "pos_x": player_pos_instant_0 + 10,
             "pos_y": player_pos_instant_1 + 10,
-            "size_x": player_pos_1 - player_pos_instant_1 + 5,
-            "size_y": 5
+            "size_x": 5,
+            "size_y": player_pos_1 - player_pos_instant_1 + 5
         }
 
         t = pygame.Surface((traînée["type_x"], traînée["type_y"]))
@@ -232,8 +245,9 @@ def création_traînées_BAS(executing, traînées, player_pos_1, player_pos_ins
     if t is not None :
         traînées_finales.append(t)
         traînées_finales_pos.append(t_pos)
+        traînées_finales_size.append(t_size)
 
-    return t_pos, t_size, traînées_finales, traînées_finales_pos
+    return traînées_finales, traînées_finales_pos, traînées_finales_size
 
 
 
@@ -414,62 +428,204 @@ while running :
 
     #-------------------------------------------------------------------------------Q---------------------------------------------------------------------------
     
-    t_q_pos, t_q_size, traînées_finales_q, traînées_finales_pos_q = création_traînée_GAUCHE(executing_lightcycle_movement_q , traînées, player_pos_instant[0], player_pos[0], player_pos[1], traînées_finales_q, traînées_finales_pos_q)
+    traînées_finales_q, traînées_finales_pos_q, traînées_finales_size_q = création_traînée_GAUCHE(executing_lightcycle_movement_q , traînées, player_pos_instant[0], player_pos[0], player_pos[1], traînées_finales_q, traînées_finales_pos_q, traînées_finales_size_q)
     
     #-------------------------------------------------------------------------------D---------------------------------------------------------------------------
     
-    t_d_pos, t_d_size, traînées_finales_d, traînées_finales_pos_d = création_traînée_DROITE(executing_lightcycle_movement_d, traînées, player_pos_instant[0], player_pos_instant[1], player_pos[0], traînées_finales_d, traînées_finales_pos_d)
+    traînées_finales_d, traînées_finales_pos_d, traînées_finales_size_d = création_traînée_DROITE(executing_lightcycle_movement_d, traînées, player_pos_instant[0], player_pos_instant[1], player_pos[0], traînées_finales_d, traînées_finales_pos_d, traînées_finales_size_d)
 
     #-------------------------------------------------------------------------------Z---------------------------------------------------------------------------
 
-    t_z_pos, t_z_size, traînées_finales_z, traînées_finales_pos_z = création_traînées_HAUT(executing_lightcycle_movement_z , traînées, player_pos_instant[1], player_pos[1], player_pos[0], traînées_finales_z, traînées_finales_pos_z)
+    traînées_finales_z, traînées_finales_pos_z, traînées_finales_size_z = création_traînées_HAUT(executing_lightcycle_movement_z , traînées, player_pos_instant[1], player_pos[1], player_pos[0], traînées_finales_z, traînées_finales_pos_z, traînées_finales_size_z)
 
     #-------------------------------------------------------------------------------S---------------------------------------------------------------------------
     
-    t_s_pos, t_s_size, traînées_finales_s, traînées_finales_pos_s = création_traînées_BAS(executing_lightcycle_movement_s, traînées, player_pos[1], player_pos_instant[1], player_pos_instant[0], traînées_finales_s, traînées_finales_pos_s)
+    traînées_finales_s, traînées_finales_pos_s, traînées_finales_size_s = création_traînées_BAS(executing_lightcycle_movement_s, traînées, player_pos[1], player_pos_instant[1], player_pos_instant[0], traînées_finales_s, traînées_finales_pos_s, traînées_finales_size_s)
 
 
     #---------------------------------------------------------------------------Joueur 2------------------------------------------------------------------------
 
     #-----------------------------------------------------------------------------LEFT--------------------------------------------------------------------------
     
-    t_left_pos, t_left_size, traînées_finales_left, traînées_finales_pos_left = création_traînée_GAUCHE(executing_lightcycle_movement_left , traînées, player_pos_2_instant[0], player_pos_2[0], player_pos_2[1], traînées_finales_left, traînées_finales_pos_left)
+    traînées_finales_left, traînées_finales_pos_left, traînées_finales_size_left = création_traînée_GAUCHE(executing_lightcycle_movement_left , traînées, player_pos_2_instant[0], player_pos_2[0], player_pos_2[1], traînées_finales_left, traînées_finales_pos_left, traînées_finales_size_left)
 
     #-----------------------------------------------------------------------------RIGHT-------------------------------------------------------------------------
     
-    t_right_pos, t_right_size, traînées_finales_right, traînées_finales_pos_right = création_traînée_DROITE(executing_lightcycle_movement_right, traînées, player_pos_2_instant[0], player_pos_2_instant[1], player_pos_2[0], traînées_finales_right, traînées_finales_pos_right)
+    traînées_finales_right, traînées_finales_pos_right, traînées_finales_size_right = création_traînée_DROITE(executing_lightcycle_movement_right, traînées, player_pos_2_instant[0], player_pos_2_instant[1], player_pos_2[0], traînées_finales_right, traînées_finales_pos_right, traînées_finales_size_right)
 
     #------------------------------------------------------------------------------UP---------------------------------------------------------------------------
     
-    t_up_pos, t_up_size, traînées_finales_up, traînées_finales_pos_up = création_traînées_HAUT(executing_lightcycle_movement_up , traînées, player_pos_2_instant[1], player_pos_2[1], player_pos_2[0], traînées_finales_up, traînées_finales_pos_up)
+    traînées_finales_up, traînées_finales_pos_up, traînées_finales_size_up = création_traînées_HAUT(executing_lightcycle_movement_up , traînées, player_pos_2_instant[1], player_pos_2[1], player_pos_2[0], traînées_finales_up, traînées_finales_pos_up, traînées_finales_size_up)
 
     #-----------------------------------------------------------------------------DOWN--------------------------------------------------------------------------
     
-    t_down_pos, t_down_size, traînées_finales_down, traînées_finales_pos_down = création_traînées_BAS(executing_lightcycle_movement_down, traînées, player_pos_2[1], player_pos_2_instant[1], player_pos_2_instant[0], traînées_finales_down, traînées_finales_pos_down)
+    traînées_finales_down, traînées_finales_pos_down, traînées_finales_size_down = création_traînées_BAS(executing_lightcycle_movement_down, traînées, player_pos_2[1], player_pos_2_instant[1], player_pos_2_instant[0], traînées_finales_down, traînées_finales_pos_down, traînées_finales_size_down)
 
 
     #-----------------------------------------------------------------------------------------------------------------------------------------------------------
     #---------------------------------------------------------------------COLLISIONS TRAÎNEES-------------------------------------------------------------------
     #-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
+    #---------------------------------------------------------------------------Joueur 1------------------------------------------------------------------------
+    
+    #-------------------------------------------------------------------------------Q---------------------------------------------------------------------------
+
+    if executing_lightcycle_movement_q :
+        for i, j in zip(traînées_finales_pos_z, traînées_finales_size_z) :
+            if player_pos[0] <= i[0] + 5 and player_pos[0] >= i[0] and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
+                running = False
+        
+        for i, j in zip(traînées_finales_pos_s, traînées_finales_size_s) :
+            if player_pos[0] <= i[0] + 5 and player_pos[0] >= i[0] and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
+                running = False
+        
+        for i, j in zip(traînées_finales_pos_up, traînées_finales_size_up) :
+            if player_pos[0] <= i[0] + 5 and player_pos[0] >= i[0] and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
+                running = False
+        
+        for i, j in zip(traînées_finales_pos_down, traînées_finales_size_down) :
+            if player_pos[0] <= i[0] + 5 and player_pos[0] >= i[0] and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
+                running = False
+
+    #-------------------------------------------------------------------------------D---------------------------------------------------------------------------
+
     if executing_lightcycle_movement_d :
-        for i in traînées_finales_pos_z :
-            if player_pos[0] + 25 >= i[0] and player_pos[0] + 20 <= i[0] and player_pos[1] - 24 >= traînées_finales_pos_z[-1][1] and player_pos[1] - 1 <= traînées_finales_pos_z[1][1] :
+        for i, j in zip(traînées_finales_pos_z, traînées_finales_size_z) :
+            if player_pos[0] + 25 >= i[0] and player_pos[0] + 20 <= i[0] and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
                 running = False
         
-        for i in traînées_finales_pos_s :
-            if player_pos[0] + 25 >= i[0] and player_pos[0] + 20 <= i[0] and player_pos[1] - 24 >= traînées_finales_pos_s[1][1] and player_pos[1] - 1 <= traînées_finales_pos_s[-1][1] :
+        for i, j in zip(traînées_finales_pos_s, traînées_finales_size_s) :
+            if player_pos[0] + 25 >= i[0] and player_pos[0] + 20 <= i[0] and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
                 running = False
         
-        for i in traînées_finales_pos_up :
-            if player_pos[0] + 25 >= i[0] and player_pos[0] + 20 <= i[0] and player_pos[1] - 24 >= traînées_finales_pos_up[-1][1] and player_pos[1] - 1 <= traînées_finales_pos_up[1][1] :
+        for i, j in zip(traînées_finales_pos_up, traînées_finales_size_up) :
+            if player_pos[0] + 25 >= i[0] and player_pos[0] + 20 <= i[0] and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
                 running = False
         
-        for i in traînées_finales_pos_down :
-            if player_pos[0] + 25 >= i[0] and player_pos[0] + 20 <= i[0] and player_pos[1] - 24 >= traînées_finales_pos_down[1][1] and player_pos[1] - 1 <= traînées_finales_pos_down[-1][1] :
+        for i, j in zip(traînées_finales_pos_down, traînées_finales_size_down) :
+            if player_pos[0] + 25 >= i[0] and player_pos[0] + 20 <= i[0] and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
+                running = False
+
+    #-------------------------------------------------------------------------------Z---------------------------------------------------------------------------
+
+    if executing_lightcycle_movement_z :
+        for i, j in zip(traînées_finales_pos_q, traînées_finales_size_q) :
+            if player_pos[1] <= i[1] + 5 and player_pos[1] >= i[1] and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
+                running = False
+        
+        for i, j in zip(traînées_finales_pos_d, traînées_finales_size_d) :
+            if player_pos[1] <= i[1] + 5 and player_pos[1] >= i[1] and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
+                running = False
+        
+        for i, j in zip(traînées_finales_pos_left, traînées_finales_size_left) :
+            if player_pos[1] <= i[1] + 5 and player_pos[1] >= i[1] and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
+                running = False
+        
+        for i, j in zip(traînées_finales_pos_right, traînées_finales_size_right) :
+            if player_pos[1] <= i[1] + 5 and player_pos[1] >= i[1] and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
+                running = False
+
+    #-------------------------------------------------------------------------------S---------------------------------------------------------------------------
+
+    if executing_lightcycle_movement_s :
+        for i, j in zip(traînées_finales_pos_q, traînées_finales_size_q) :
+            if player_pos[1] + 25 >= i[1] and player_pos[1] + 20 <= i[1] and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
+                running = False
+        
+        for i, j in zip(traînées_finales_pos_d, traînées_finales_size_d) :
+            if player_pos[1] + 25 >= i[1] and player_pos[1] + 20 <= i[1] and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
+                running = False
+        
+        for i, j in zip(traînées_finales_pos_left, traînées_finales_size_left) :
+            if player_pos[1] + 25 >= i[1] and player_pos[1] + 20 <= i[1] and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
+                running = False
+        
+        for i, j in zip(traînées_finales_pos_right, traînées_finales_size_right) :
+            if player_pos[1] + 25 >= i[1] and player_pos[1] + 20 <= i[1] and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
                 running = False
 
 
+    #---------------------------------------------------------------------------Joueur 2------------------------------------------------------------------------
+
+    #-----------------------------------------------------------------------------LEFT--------------------------------------------------------------------------
+
+    if executing_lightcycle_movement_left :
+        for i, j in zip(traînées_finales_pos_z, traînées_finales_size_z) :
+            if player_pos_2[0] <= i[0] + 5 and player_pos_2[0] >= i[0] and player_pos_2[1] + 24 >= i[1] and player_pos_2[1] - 1 <= i[1] + j[1] :
+                running = False
+        
+        for i, j in zip(traînées_finales_pos_s, traînées_finales_size_s) :
+            if player_pos_2[0] <= i[0] + 5 and player_pos_2[0] >= i[0] and player_pos_2[1] + 24 >= i[1] and player_pos_2[1] - 1 <= i[1] + j[1] :
+                running = False
+        
+        for i, j in zip(traînées_finales_pos_up, traînées_finales_size_up) :
+            if player_pos_2[0] <= i[0] + 5 and player_pos_2[0] >= i[0] and player_pos_2[1] + 24 >= i[1] and player_pos_2[1] - 1 <= i[1] + j[1] :
+                running = False
+        
+        for i, j in zip(traînées_finales_pos_down, traînées_finales_size_down) :
+            if player_pos_2[0] <= i[0] + 5 and player_pos_2[0] >= i[0] and player_pos_2[1] + 24 >= i[1] and player_pos_2[1] - 1 <= i[1] + j[1] :
+                running = False
+
+    #-----------------------------------------------------------------------------RIGHT-------------------------------------------------------------------------
+
+    if executing_lightcycle_movement_right :
+        for i, j in zip(traînées_finales_pos_z, traînées_finales_size_z) :
+            if player_pos_2[0] + 25 >= i[0] and player_pos_2[0] + 20 <= i[0] and player_pos_2[1] + 24 >= i[1] and player_pos_2[1] - 1 <= i[1] + j[1] :
+                running = False
+        
+        for i, j in zip(traînées_finales_pos_s, traînées_finales_size_s) :
+            if player_pos_2[0] + 25 >= i[0] and player_pos_2[0] + 20 <= i[0] and player_pos_2[1] + 24 >= i[1] and player_pos_2[1] - 1 <= i[1] + j[1] :
+                running = False
+        
+        for i, j in zip(traînées_finales_pos_up, traînées_finales_size_up) :
+            if player_pos_2[0] + 25 >= i[0] and player_pos_2[0] + 20 <= i[0] and player_pos_2[1] + 24 >= i[1] and player_pos_2[1] - 1 <= i[1] + j[1] :
+                running = False
+        
+        for i, j in zip(traînées_finales_pos_down, traînées_finales_size_down) :
+            if player_pos_2[0] + 25 >= i[0] and player_pos_2[0] + 20 <= i[0] and player_pos_2[1] + 24 >= i[1] and player_pos_2[1] - 1 <= i[1] + j[1] :
+                running = False
+
+    #------------------------------------------------------------------------------UP---------------------------------------------------------------------------
+
+    if executing_lightcycle_movement_up :
+        for i, j in zip(traînées_finales_pos_q, traînées_finales_size_q) :
+            if player_pos_2[1] <= i[1] + 5 and player_pos_2[1] >= i[1] and player_pos_2[0] + 24 >= i[0] and player_pos_2[0] - 1 <= i[0] + j[0] :
+                running = False
+        
+        for i, j in zip(traînées_finales_pos_d, traînées_finales_size_d) :
+            if player_pos_2[1] <= i[1] + 5 and player_pos_2[1] >= i[1] and player_pos_2[0] + 24 >= i[0] and player_pos_2[0] - 1 <= i[0] + j[0] :
+                running = False
+        
+        for i, j in zip(traînées_finales_pos_left, traînées_finales_size_left) :
+            if player_pos_2[1] <= i[1] + 5 and player_pos_2[1] >= i[1] and player_pos_2[0] + 24 >= i[0] and player_pos_2[0] - 1 <= i[0] + j[0] :
+                running = False
+        
+        for i, j in zip(traînées_finales_pos_right, traînées_finales_size_right) :
+            if player_pos_2[1] <= i[1] + 5 and player_pos_2[1] >= i[1] and player_pos_2[0] + 24 >= i[0] and player_pos_2[0] - 1 <= i[0] + j[0] :
+                running = False
+
+    #-----------------------------------------------------------------------------DOWN--------------------------------------------------------------------------
+    
+    if executing_lightcycle_movement_down :
+        for i, j in zip(traînées_finales_pos_q, traînées_finales_size_q) :
+            if player_pos_2[1] + 25 >= i[1] and player_pos_2[1] + 20 <= i[1] and player_pos_2[0] + 24 >= i[0] and player_pos_2[0] - 1 <= i[0] + j[0] :
+                running = False
+        
+        for i, j in zip(traînées_finales_pos_d, traînées_finales_size_d) :
+            if player_pos_2[1] + 25 >= i[1] and player_pos_2[1] + 20 <= i[1] and player_pos_2[0] + 24 >= i[0] and player_pos_2[0] - 1 <= i[0] + j[0] :
+                running = False
+        
+        for i, j in zip(traînées_finales_pos_left, traînées_finales_size_left) :
+            if player_pos_2[1] + 25 >= i[1] and player_pos_2[1] + 20 <= i[1] and player_pos_2[0] + 24 >= i[0] and player_pos_2[0] - 1 <= i[0] + j[0] :
+                running = False
+        
+        for i, j in zip(traînées_finales_pos_right, traînées_finales_size_right) :
+            if player_pos_2[1] + 25 >= i[1] and player_pos_2[1] + 20 <= i[1] and player_pos_2[0] + 24 >= i[0] and player_pos_2[0] - 1 <= i[0] + j[0] :
+                running = False
+
+
+
+    
     for i, j in zip(traînées_finales_q, traînées_finales_pos_q) :
         i.fill(traînées["color"])
         screen.blit(i, j)
