@@ -1,3 +1,4 @@
+import random
 import os
 import time
 import pygame
@@ -263,73 +264,225 @@ secondes = 0
 score_player = 0
 score_player_2 = 0
 
-def frôlement_GAUCHE(executing, traînées_finales_pos, traînées_finales_size, traînées_finales_pos_2, traînées_finales_size_2, traînées_finales_pos_3, traînées_finales_size_3, traînées_finales_pos_4, traînées_finales_size_4, player_pos, score) :
+score_attribué_player = False
+score_attribué_player_2 = False
+
+frôlements_de_la_mort_qui_tue_player = 0
+frôlements_player = frôlements_de_la_mort_qui_tue_player + 0
+
+frôlements_de_la_mort_qui_tue_player_2 = 0
+frôlements_player_2 = frôlements_de_la_mort_qui_tue_player_2 + 0
+
+def frôlement_GAUCHE(executing, traînées_finales_pos, traînées_finales_size, traînées_finales_pos_2, traînées_finales_size_2, traînées_finales_pos_3, traînées_finales_size_3, traînées_finales_pos_4, traînées_finales_size_4, player_pos, score_attribué, score, frôlements, frôlements_de_la_mort_qui_tue) :
     if executing :
         for i, j in zip(traînées_finales_pos, traînées_finales_size) :
-            if player_pos[0] <= i[0] + j[0] + 10 and player_pos[0] >= i[0] + j[0] + 1 and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
-                score += 10
+            if score_attribué == False :
+                if player_pos[0] <= i[0] + j[0] + 5 and player_pos[0] >= i[0] + j[0] + 1 and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
+                    score += 50
+                    frôlements_de_la_mort_qui_tue += 1
+                    score_attribué = True
+            if score_attribué == False :
+                if player_pos[0] <= i[0] + j[0] + 10 and player_pos[0] >= i[0] + j[0] + 1 and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
+                    score += 10
+                    frôlements += 1
+                    score_attribué = True
         for i, j in zip(traînées_finales_pos_2, traînées_finales_size_2) :
-            if player_pos[0] <= i[0] + j[0] + 10 and player_pos[0] >= i[0] + j[0] + 1 and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
-                score += 10
+            if score_attribué == False :
+                if player_pos[0] <= i[0] + j[0] + 5 and player_pos[0] >= i[0] + j[0] + 1 and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
+                    score += 50
+                    frôlements_de_la_mort_qui_tue += 1
+                    score_attribué = True
+            if score_attribué == False :
+                if player_pos[0] <= i[0] + j[0] + 10 and player_pos[0] >= i[0] + j[0] + 1 and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
+                    score += 10
+                    frôlements += 1
+                    score_attribué = True
         for i, j in zip(traînées_finales_pos_3, traînées_finales_size_3) :
-            if player_pos[0] <= i[0] + j[0] + 10 and player_pos[0] >= i[0] + j[0] + 1 and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
-                score += 10
+            if score_attribué == False :
+                if player_pos[0] <= i[0] + j[0] + 5 and player_pos[0] >= i[0] + j[0] + 1 and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
+                    score += 50
+                    frôlements_de_la_mort_qui_tue += 1
+                    score_attribué = True
+            if score_attribué == False :
+                if player_pos[0] <= i[0] + j[0] + 10 and player_pos[0] >= i[0] + j[0] + 1 and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
+                    score += 10
+                    frôlements += 1
+                    score_attribué = True
         for i, j in zip(traînées_finales_pos_4, traînées_finales_size_4) :
-            if player_pos[0] <= i[0] + j[0] + 10 and player_pos[0] >= i[0] + j[0] + 1 and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
-                score += 10
+            if score_attribué == False :
+                if player_pos[0] <= i[0] + j[0] + 5 and player_pos[0] >= i[0] + j[0] + 1 and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
+                    score += 50
+                    frôlements_de_la_mort_qui_tue += 1
+                    score_attribué = True
+            if score_attribué == False :
+                if player_pos[0] <= i[0] + j[0] + 10 and player_pos[0] >= i[0] + j[0] + 1 and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
+                    score += 10
+                    frôlements += 1
+                    score_attribué = True
 
-    return score
+    return score, frôlements, frôlements_de_la_mort_qui_tue
 
-def frôlement_DROITE(executing, traînées_finales_pos, traînées_finales_size, traînées_finales_pos_2, traînées_finales_size_2, traînées_finales_pos_3, traînées_finales_size_3, traînées_finales_pos_4, traînées_finales_size_4, player_pos, score) :
+def frôlement_DROITE(executing, traînées_finales_pos, traînées_finales_size, traînées_finales_pos_2, traînées_finales_size_2, traînées_finales_pos_3, traînées_finales_size_3, traînées_finales_pos_4, traînées_finales_size_4, player_pos, score_attribué, score, frôlements, frôlements_de_la_mort_qui_tue) :
     if executing :
         for i, j in zip(traînées_finales_pos, traînées_finales_size) :
-            if player_pos[0] >= i[0] - 10 and player_pos[0] <= i[0] - 1 and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
-                score += 10
+            if score_attribué == False :
+                if player_pos[0] + 25 >= i[0] - 5 and player_pos[0] + 25 <= i[0] - 1 and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
+                    score += 50
+                    frôlements_de_la_mort_qui_tue += 1
+                    score_attribué = True
+            if score_attribué == False :
+                if player_pos[0] + 25 >= i[0] - 10 and player_pos[0] + 25 <= i[0] - 1 and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
+                    score += 10
+                    frôlements += 1
+                    score_attribué = True
         for i, j in zip(traînées_finales_pos_2, traînées_finales_size_2) :
-            if player_pos[0] >= i[0] - 10 and player_pos[0] <= i[0] - 1 and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
-                score += 10
+            if score_attribué == False :
+                if player_pos[0] + 25 >= i[0] - 5 and player_pos[0] + 25 <= i[0] - 1 and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
+                    score += 50
+                    frôlements_de_la_mort_qui_tue += 1
+                    score_attribué = True
+            if score_attribué == False :
+                if player_pos[0] + 25 >= i[0] - 10 and player_pos[0] + 25 <= i[0] - 1 and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
+                    score += 10
+                    frôlements += 1
+                    score_attribué = True
         for i, j in zip(traînées_finales_pos_3, traînées_finales_size_3) :
-            if player_pos[0] >= i[0] - 10 and player_pos[0] <= i[0] - 1 and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
-                score += 10
+            if score_attribué == False :
+                if player_pos[0] + 25 >= i[0] - 5 and player_pos[0] + 25 <= i[0] - 1 and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
+                    score += 50
+                    frôlements_de_la_mort_qui_tue += 1
+                    score_attribué = True
+            if score_attribué == False :
+                if player_pos[0] + 25 >= i[0] - 10 and player_pos[0] + 25 <= i[0] - 1 and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
+                    score += 10
+                    frôlements += 1
+                    score_attribué = True
         for i, j in zip(traînées_finales_pos_4, traînées_finales_size_4) :
-            if player_pos[0] >= i[0] - 10 and player_pos[0] <= i[0] - 1 and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
-                score += 10
+            if score_attribué == False :
+                if player_pos[0] + 25 >= i[0] - 5 and player_pos[0] + 25 <= i[0] - 1 and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
+                    score += 50
+                    frôlements_de_la_mort_qui_tue += 1
+                    score_attribué = True
+            if score_attribué == False :
+                if player_pos[0] + 25 >= i[0] - 10 and player_pos[0] + 25 <= i[0] - 1 and player_pos[1] + 24 >= i[1] and player_pos[1] - 1 <= i[1] + j[1] :
+                    score += 10
+                    frôlements += 1
+                    score_attribué = True
 
-    return score
+    return score, frôlements, frôlements_de_la_mort_qui_tue
 
-def frôlement_HAUT(executing, traînées_finales_pos, traînées_finales_size, traînées_finales_pos_2, traînées_finales_size_2, traînées_finales_pos_3, traînées_finales_size_3, traînées_finales_pos_4, traînées_finales_size_4, player_pos, score) :
+def frôlement_HAUT(executing, traînées_finales_pos, traînées_finales_size, traînées_finales_pos_2, traînées_finales_size_2, traînées_finales_pos_3, traînées_finales_size_3, traînées_finales_pos_4, traînées_finales_size_4, player_pos, score_attribué, score, frôlements, frôlements_de_la_mort_qui_tue) :
     if executing :
         for i, j in zip(traînées_finales_pos, traînées_finales_size) :
-            if player_pos[1] <= i[1] + j[1] + 10 and player_pos[1] >= i[1] + j[1] + 1 and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
-                score += 10
+            if score_attribué == False :
+                if player_pos[1] <= i[1] + j[1] + 5 and player_pos[1] >= i[1] + j[1] + 1 and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
+                    score += 50
+                    frôlements_de_la_mort_qui_tue += 1
+                    score_attribué = True
+            if score_attribué == False :
+                if player_pos[1] <= i[1] + j[1] + 10 and player_pos[1] >= i[1] + j[1] + 1 and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
+                    score += 10
+                    frôlements += 1
+                    score_attribué = True
         for i, j in zip(traînées_finales_pos_2, traînées_finales_size_2) :
-            if player_pos[1] <= i[1] + j[1] + 10 and player_pos[1] >= i[1] + j[1] + 1 and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
-                score += 10
+            if score_attribué == False :
+                if player_pos[1] <= i[1] + j[1] + 5 and player_pos[1] >= i[1] + j[1] + 1 and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
+                    score += 50
+                    frôlements_de_la_mort_qui_tue += 1
+                    score_attribué = True
+            if score_attribué == False :
+                if player_pos[1] <= i[1] + j[1] + 10 and player_pos[1] >= i[1] + j[1] + 1 and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
+                    score += 10
+                    frôlements += 1
+                    score_attribué = True
         for i, j in zip(traînées_finales_pos_3, traînées_finales_size_3) :
-            if player_pos[1] <= i[1] + j[1] + 10 and player_pos[1] >= i[1] + j[1] + 1 and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
-                score += 10
+            if score_attribué == False :
+                if player_pos[1] <= i[1] + j[1] + 5 and player_pos[1] >= i[1] + j[1] + 1 and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
+                    score += 50
+                    frôlements_de_la_mort_qui_tue += 1
+                    score_attribué = True
+            if score_attribué == False :
+                if player_pos[1] <= i[1] + j[1] + 10 and player_pos[1] >= i[1] + j[1] + 1 and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
+                    score += 10
+                    frôlements += 1
+                    score_attribué = True
         for i, j in zip(traînées_finales_pos_4, traînées_finales_size_4) :
-            if player_pos[1] <= i[1] + j[1] + 10 and player_pos[1] >= i[1] + j[1] + 1 and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
-                score += 10
+            if score_attribué == False :
+                if player_pos[1] <= i[1] + j[1] + 5 and player_pos[1] >= i[1] + j[1] + 1 and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
+                    score += 50
+                    frôlements_de_la_mort_qui_tue += 1
+                    score_attribué = True
+            if score_attribué == False :
+                if player_pos[1] <= i[1] + j[1] + 10 and player_pos[1] >= i[1] + j[1] + 1 and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
+                    score += 10
+                    frôlements += 1
+                    score_attribué = True
 
-    return score
+    return score, frôlements, frôlements_de_la_mort_qui_tue
 
-def frôlement_BAS(executing, traînées_finales_pos, traînées_finales_size, traînées_finales_pos_2, traînées_finales_size_2, traînées_finales_pos_3, traînées_finales_size_3, traînées_finales_pos_4, traînées_finales_size_4, player_pos, score) :
+def frôlement_BAS(executing, traînées_finales_pos, traînées_finales_size, traînées_finales_pos_2, traînées_finales_size_2, traînées_finales_pos_3, traînées_finales_size_3, traînées_finales_pos_4, traînées_finales_size_4, player_pos, score_attribué, score, frôlements, frôlements_de_la_mort_qui_tue) :
     if executing :
         for i, j in zip(traînées_finales_pos, traînées_finales_size) :
-            if player_pos[1] >= i[1] - 10 and player_pos[1] <= i[1] - 1 and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
-                score += 10
+            if score_attribué == False :
+                if player_pos[1] + 25 >= i[1] - 5 and player_pos[1] + 25 <= i[1] - 1 and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
+                    score += 50
+                    frôlements_de_la_mort_qui_tue += 1
+                    score_attribué = True
+            if score_attribué == False :
+                if player_pos[1] + 25 >= i[1] - 10 and player_pos[1] + 25 <= i[1] - 1 and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
+                    score += 10
+                    frôlements += 1
+                    score_attribué = True
         for i, j in zip(traînées_finales_pos_2, traînées_finales_size_2) :
-            if player_pos[1] >= i[1] - 10 and player_pos[1] <= i[1] - 1 and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
-                score += 10
+            if score_attribué == False :
+                if player_pos[1] + 25 >= i[1] - 5 and player_pos[1] + 25 <= i[1] - 1 and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
+                    score += 50
+                    frôlements_de_la_mort_qui_tue += 1
+                    score_attribué = True
+            if score_attribué == False :
+                if player_pos[1] + 25 >= i[1] - 10 and player_pos[1] + 25 <= i[1] - 1 and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
+                    score += 10
+                    frôlements += 1
+                    score_attribué = True
         for i, j in zip(traînées_finales_pos_3, traînées_finales_size_3) :
-            if player_pos[1] >= i[1] - 10 and player_pos[1] <= i[1] - 1 and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
-                score += 10
+            if score_attribué == False :
+                if player_pos[1] + 25 >= i[1] - 5 and player_pos[1] + 25 <= i[1] - 1 and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
+                    score += 50
+                    frôlements_de_la_mort_qui_tue += 1
+                    score_attribué = True
+            if score_attribué == False :
+                if player_pos[1] + 25 >= i[1] - 10 and player_pos[1] + 25 <= i[1] - 1 and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
+                    score += 10
+                    frôlements += 1
+                    score_attribué = True
         for i, j in zip(traînées_finales_pos_4, traînées_finales_size_4) :
-            if player_pos[1] >= i[1] - 10 and player_pos[1] <= i[1] - 1 and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
-                score += 10
+            if score_attribué == False :
+                if player_pos[1] + 25 >= i[1] - 5 and player_pos[1] + 25 <= i[1] - 1 and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
+                    score += 50
+                    frôlements_de_la_mort_qui_tue += 1
+                    score_attribué = True
+            if score_attribué == False :
+                if player_pos[1] + 25 >= i[1] - 10 and player_pos[1] + 25 <= i[1] - 1 and player_pos[0] + 24 >= i[0] and player_pos[0] - 1 <= i[0] + j[0] :
+                    score += 10
+                    frôlements += 1
+                    score_attribué = True
 
-    return score
+    return score, frôlements, frôlements_de_la_mort_qui_tue
+
+collectibles = {
+    "type_x": 5,
+    "type_y": 5,
+    "color": "#346910",
+    "pos_x": random.randint(grid_pos[0], grid_pos[0] + grid_size[0] - 5),
+    "pos_y": random.randint(grid_pos[1], grid_pos[1] + grid_size[1] - 5),
+    "size_x": 5,
+    "size_y": 5
+}
+
+collectibles = pygame.Surface((5,5))
+collectibles.fill("#346910")
+collectibles_pos = [random.randint(grid_pos[0], grid_pos[0] + grid_size[0] - 5), random.randint(grid_pos[1], grid_pos[1] + grid_size[1] - 5)]
+collectibles_size = [5, 5]
 
 
 
@@ -359,8 +512,8 @@ while running :
     
     if pressed_keys[K_q] and not pressed_keys[K_d] and not pressed_keys[K_z] and not pressed_keys[K_s] :
         if executing_lightcycle_movement_q == False or executing_lightcycle_movement_d == False :            
-            score = frôlement_HAUT(executing_lightcycle_movement_z, traînées_finales_pos_q, traînées_finales_size_q, traînées_finales_pos_d, traînées_finales_size_d, traînées_finales_pos_left, traînées_finales_size_left, traînées_finales_pos_right, traînées_finales_size_right, player_pos, score_player)
-            score = frôlement_BAS(executing_lightcycle_movement_s, traînées_finales_pos_q, traînées_finales_size_q, traînées_finales_pos_d, traînées_finales_size_d, traînées_finales_pos_left, traînées_finales_size_left, traînées_finales_pos_right, traînées_finales_size_right, player_pos, score_player)
+            score_player, frôlements_player, frôlements_de_la_mort_qui_tue_player = frôlement_HAUT(executing_lightcycle_movement_z, traînées_finales_pos_q, traînées_finales_size_q, traînées_finales_pos_d, traînées_finales_size_d, traînées_finales_pos_left, traînées_finales_size_left, traînées_finales_pos_right, traînées_finales_size_right, player_pos, score_attribué_player, score_player, frôlements_player, frôlements_de_la_mort_qui_tue_player)
+            score_player, frôlements_player, frôlements_de_la_mort_qui_tue_player = frôlement_BAS(executing_lightcycle_movement_s, traînées_finales_pos_q, traînées_finales_size_q, traînées_finales_pos_d, traînées_finales_size_d, traînées_finales_pos_left, traînées_finales_size_left, traînées_finales_pos_right, traînées_finales_size_right, player_pos, score_attribué_player, score_player, frôlements_player, frôlements_de_la_mort_qui_tue_player)
             
             executing_lightcycle_movement_z = False
             executing_lightcycle_movement_s = False
@@ -377,8 +530,8 @@ while running :
     
     if pressed_keys[K_d] and not pressed_keys[K_q] and not pressed_keys[K_z] and not pressed_keys[K_s] :
         if executing_lightcycle_movement_q == False or executing_lightcycle_movement_d == False :
-            score = frôlement_HAUT(executing_lightcycle_movement_z, traînées_finales_pos_q, traînées_finales_size_q, traînées_finales_pos_d, traînées_finales_size_d, traînées_finales_pos_left, traînées_finales_size_left, traînées_finales_pos_right, traînées_finales_size_right, player_pos, score_player)
-            score = frôlement_BAS(executing_lightcycle_movement_s, traînées_finales_pos_q, traînées_finales_size_q, traînées_finales_pos_d, traînées_finales_size_d, traînées_finales_pos_left, traînées_finales_size_left, traînées_finales_pos_right, traînées_finales_size_right, player_pos, score_player)
+            score_player, frôlements_player, frôlements_de_la_mort_qui_tue_player = frôlement_HAUT(executing_lightcycle_movement_z, traînées_finales_pos_q, traînées_finales_size_q, traînées_finales_pos_d, traînées_finales_size_d, traînées_finales_pos_left, traînées_finales_size_left, traînées_finales_pos_right, traînées_finales_size_right, player_pos, score_attribué_player, score_player, frôlements_player, frôlements_de_la_mort_qui_tue_player)
+            score_player, frôlements_player, frôlements_de_la_mort_qui_tue_player = frôlement_BAS(executing_lightcycle_movement_s, traînées_finales_pos_q, traînées_finales_size_q, traînées_finales_pos_d, traînées_finales_size_d, traînées_finales_pos_left, traînées_finales_size_left, traînées_finales_pos_right, traînées_finales_size_right, player_pos, score_attribué_player, score_player, frôlements_player, frôlements_de_la_mort_qui_tue_player)
             
             executing_lightcycle_movement_z = False
             executing_lightcycle_movement_s = False
@@ -395,8 +548,8 @@ while running :
 
     if pressed_keys[K_z] and not pressed_keys[K_q] and not pressed_keys[K_d] and not pressed_keys[K_s] :
         if executing_lightcycle_movement_z == False or executing_lightcycle_movement_s == False :
-            score = frôlement_GAUCHE(executing_lightcycle_movement_q, traînées_finales_pos_z, traînées_finales_size_z, traînées_finales_pos_s, traînées_finales_size_s, traînées_finales_pos_up, traînées_finales_size_up, traînées_finales_pos_down, traînées_finales_size_down, player_pos, score_player)
-            score = frôlement_DROITE(executing_lightcycle_movement_d, traînées_finales_pos_z, traînées_finales_size_z, traînées_finales_pos_s, traînées_finales_size_s, traînées_finales_pos_up, traînées_finales_size_up, traînées_finales_pos_down, traînées_finales_size_down, player_pos, score_player)
+            score_player, frôlements_player, frôlements_de_la_mort_qui_tue_player = frôlement_GAUCHE(executing_lightcycle_movement_q, traînées_finales_pos_z, traînées_finales_size_z, traînées_finales_pos_s, traînées_finales_size_s, traînées_finales_pos_up, traînées_finales_size_up, traînées_finales_pos_down, traînées_finales_size_down, player_pos, score_attribué_player, score_player, frôlements_player, frôlements_de_la_mort_qui_tue_player)
+            score_player, frôlements_player, frôlements_de_la_mort_qui_tue_player = frôlement_DROITE(executing_lightcycle_movement_d, traînées_finales_pos_z, traînées_finales_size_z, traînées_finales_pos_s, traînées_finales_size_s, traînées_finales_pos_up, traînées_finales_size_up, traînées_finales_pos_down, traînées_finales_size_down, player_pos, score_attribué_player, score_player, frôlements_player, frôlements_de_la_mort_qui_tue_player)
             
             executing_lightcycle_movement_q = False
             executing_lightcycle_movement_d = False
@@ -413,8 +566,8 @@ while running :
     
     if pressed_keys[K_s] and not pressed_keys[K_q] and not pressed_keys[K_d] and not pressed_keys[K_z] :
         if executing_lightcycle_movement_z == False or executing_lightcycle_movement_s == False :
-            score = frôlement_GAUCHE(executing_lightcycle_movement_q, traînées_finales_pos_z, traînées_finales_size_z, traînées_finales_pos_s, traînées_finales_size_s, traînées_finales_pos_up, traînées_finales_size_up, traînées_finales_pos_down, traînées_finales_size_down, player_pos, score_player)
-            score = frôlement_DROITE(executing_lightcycle_movement_d, traînées_finales_pos_z, traînées_finales_size_z, traînées_finales_pos_s, traînées_finales_size_s, traînées_finales_pos_up, traînées_finales_size_up, traînées_finales_pos_down, traînées_finales_size_down, player_pos, score_player)
+            score_player, frôlements_player, frôlements_de_la_mort_qui_tue_player = frôlement_GAUCHE(executing_lightcycle_movement_q, traînées_finales_pos_z, traînées_finales_size_z, traînées_finales_pos_s, traînées_finales_size_s, traînées_finales_pos_up, traînées_finales_size_up, traînées_finales_pos_down, traînées_finales_size_down, player_pos, score_attribué_player, score_player, frôlements_player, frôlements_de_la_mort_qui_tue_player)
+            score_player, frôlements_player, frôlements_de_la_mort_qui_tue_player = frôlement_DROITE(executing_lightcycle_movement_d, traînées_finales_pos_z, traînées_finales_size_z, traînées_finales_pos_s, traînées_finales_size_s, traînées_finales_pos_up, traînées_finales_size_up, traînées_finales_pos_down, traînées_finales_size_down, player_pos, score_attribué_player, score_player, frôlements_player, frôlements_de_la_mort_qui_tue_player)
 
             executing_lightcycle_movement_q = False
             executing_lightcycle_movement_d = False
@@ -436,8 +589,8 @@ while running :
     
     if pressed_keys[K_LEFT] and not pressed_keys[K_RIGHT] and not pressed_keys[K_UP] and not pressed_keys[K_DOWN] :
         if executing_lightcycle_movement_left == False or executing_lightcycle_movement_right == False :
-            score = frôlement_HAUT(executing_lightcycle_movement_up, traînées_finales_pos_q, traînées_finales_size_q, traînées_finales_pos_d, traînées_finales_size_d, traînées_finales_pos_left, traînées_finales_size_left, traînées_finales_pos_right, traînées_finales_size_right, player_pos_2, score_player_2)
-            score = frôlement_BAS(executing_lightcycle_movement_down, traînées_finales_pos_q, traînées_finales_size_q, traînées_finales_pos_d, traînées_finales_size_d, traînées_finales_pos_left, traînées_finales_size_left, traînées_finales_pos_right, traînées_finales_size_right, player_pos_2, score_player_2)
+            score_player_2, frôlements_player_2, frôlements_de_la_mort_qui_tue_player_2 = frôlement_HAUT(executing_lightcycle_movement_up, traînées_finales_pos_q, traînées_finales_size_q, traînées_finales_pos_d, traînées_finales_size_d, traînées_finales_pos_left, traînées_finales_size_left, traînées_finales_pos_right, traînées_finales_size_right, player_pos_2, score_attribué_player_2, score_player_2, frôlements_player_2, frôlements_de_la_mort_qui_tue_player_2)
+            score_player_2, frôlements_player_2, frôlements_de_la_mort_qui_tue_player_2 = frôlement_BAS(executing_lightcycle_movement_down, traînées_finales_pos_q, traînées_finales_size_q, traînées_finales_pos_d, traînées_finales_size_d, traînées_finales_pos_left, traînées_finales_size_left, traînées_finales_pos_right, traînées_finales_size_right, player_pos_2, score_attribué_player_2, score_player_2, frôlements_player_2, frôlements_de_la_mort_qui_tue_player_2)
 
             executing_lightcycle_movement_up = False
             executing_lightcycle_movement_down = False
@@ -454,8 +607,8 @@ while running :
     
     if pressed_keys[K_RIGHT] and not pressed_keys[K_LEFT] and not pressed_keys[K_UP] and not pressed_keys[K_DOWN] :
         if executing_lightcycle_movement_left == False or executing_lightcycle_movement_right == False :
-            score = frôlement_HAUT(executing_lightcycle_movement_up, traînées_finales_pos_q, traînées_finales_size_q, traînées_finales_pos_d, traînées_finales_size_d, traînées_finales_pos_left, traînées_finales_size_left, traînées_finales_pos_right, traînées_finales_size_right, player_pos_2, score_player_2)
-            score = frôlement_BAS(executing_lightcycle_movement_down, traînées_finales_pos_q, traînées_finales_size_q, traînées_finales_pos_d, traînées_finales_size_d, traînées_finales_pos_left, traînées_finales_size_left, traînées_finales_pos_right, traînées_finales_size_right, player_pos_2, score_player_2)
+            score_player_2, frôlements_player_2, frôlements_de_la_mort_qui_tue_player_2 = frôlement_HAUT(executing_lightcycle_movement_up, traînées_finales_pos_q, traînées_finales_size_q, traînées_finales_pos_d, traînées_finales_size_d, traînées_finales_pos_left, traînées_finales_size_left, traînées_finales_pos_right, traînées_finales_size_right, player_pos_2, score_attribué_player_2, score_player_2, frôlements_player_2, frôlements_de_la_mort_qui_tue_player_2)
+            score_player_2, frôlements_player_2, frôlements_de_la_mort_qui_tue_player_2 = frôlement_BAS(executing_lightcycle_movement_down, traînées_finales_pos_q, traînées_finales_size_q, traînées_finales_pos_d, traînées_finales_size_d, traînées_finales_pos_left, traînées_finales_size_left, traînées_finales_pos_right, traînées_finales_size_right, player_pos_2, score_attribué_player_2, score_player_2, frôlements_player_2, frôlements_de_la_mort_qui_tue_player_2)
 
             executing_lightcycle_movement_up = False
             executing_lightcycle_movement_down = False
@@ -472,8 +625,8 @@ while running :
     
     if pressed_keys[K_UP] and not pressed_keys[K_LEFT] and not pressed_keys[K_RIGHT] and not pressed_keys[K_DOWN] :
         if executing_lightcycle_movement_up == False or executing_lightcycle_movement_down == False :
-            score = frôlement_GAUCHE(executing_lightcycle_movement_left, traînées_finales_pos_z, traînées_finales_size_z, traînées_finales_pos_s, traînées_finales_size_s, traînées_finales_pos_up, traînées_finales_size_up, traînées_finales_pos_down, traînées_finales_size_down, player_pos_2, score_player_2)
-            score = frôlement_DROITE(executing_lightcycle_movement_right, traînées_finales_pos_z, traînées_finales_size_z, traînées_finales_pos_s, traînées_finales_size_s, traînées_finales_pos_up, traînées_finales_size_up, traînées_finales_pos_down, traînées_finales_size_down, player_pos_2, score_player_2)
+            score_player_2, frôlements_player_2, frôlements_de_la_mort_qui_tue_player_2 = frôlement_GAUCHE(executing_lightcycle_movement_left, traînées_finales_pos_z, traînées_finales_size_z, traînées_finales_pos_s, traînées_finales_size_s, traînées_finales_pos_up, traînées_finales_size_up, traînées_finales_pos_down, traînées_finales_size_down, player_pos_2, score_attribué_player_2, score_player_2, frôlements_player_2, frôlements_de_la_mort_qui_tue_player_2)
+            score_player_2, frôlements_player_2, frôlements_de_la_mort_qui_tue_player_2 = frôlement_DROITE(executing_lightcycle_movement_right, traînées_finales_pos_z, traînées_finales_size_z, traînées_finales_pos_s, traînées_finales_size_s, traînées_finales_pos_up, traînées_finales_size_up, traînées_finales_pos_down, traînées_finales_size_down, player_pos_2, score_attribué_player_2, score_player_2, frôlements_player_2, frôlements_de_la_mort_qui_tue_player_2)
 
             executing_lightcycle_movement_left = False
             executing_lightcycle_movement_right = False
@@ -490,8 +643,8 @@ while running :
     
     if pressed_keys[K_DOWN] and not pressed_keys[K_LEFT] and not pressed_keys[K_RIGHT] and not pressed_keys[K_UP] :
         if executing_lightcycle_movement_up == False or executing_lightcycle_movement_down == False :
-            score = frôlement_GAUCHE(executing_lightcycle_movement_left, traînées_finales_pos_z, traînées_finales_size_z, traînées_finales_pos_s, traînées_finales_size_s, traînées_finales_pos_up, traînées_finales_size_up, traînées_finales_pos_down, traînées_finales_size_down, player_pos_2, score_player_2)
-            score = frôlement_DROITE(executing_lightcycle_movement_right, traînées_finales_pos_z, traînées_finales_size_z, traînées_finales_pos_s, traînées_finales_size_s, traînées_finales_pos_up, traînées_finales_size_up, traînées_finales_pos_down, traînées_finales_size_down, player_pos_2, score_player_2)
+            score_player_2, frôlements_player_2, frôlements_de_la_mort_qui_tue_player_2 = frôlement_GAUCHE(executing_lightcycle_movement_left, traînées_finales_pos_z, traînées_finales_size_z, traînées_finales_pos_s, traînées_finales_size_s, traînées_finales_pos_up, traînées_finales_size_up, traînées_finales_pos_down, traînées_finales_size_down, player_pos_2, score_attribué_player_2, score_player_2, frôlements_player_2, frôlements_de_la_mort_qui_tue_player_2)
+            score_player_2, frôlements_player_2, frôlements_de_la_mort_qui_tue_player_2 = frôlement_DROITE(executing_lightcycle_movement_right, traînées_finales_pos_z, traînées_finales_size_z, traînées_finales_pos_s, traînées_finales_size_s, traînées_finales_pos_up, traînées_finales_size_up, traînées_finales_pos_down, traînées_finales_size_down, player_pos_2, score_attribué_player_2, score_player_2, frôlements_player_2, frôlements_de_la_mort_qui_tue_player_2)
 
             executing_lightcycle_movement_left = False
             executing_lightcycle_movement_right = False
@@ -764,12 +917,19 @@ while running :
         screen.blit(i, j)
 
     secondes += 1/60
+    
     if secondes == 60 :
         secondes = 0
         minutes += 1
+        score_player += 100
+        score_player_2 += 100
+    
     if minutes == 60 :
         minutes = 0
         heures += 1
+        score_player += 10000
+        score_player_2 += 10000
+
 
     screen.blit(player, player_pos)
     screen.blit(player_2, player_pos_2)
@@ -787,7 +947,7 @@ while running :
     font_titre_Temps = pygame.font.Font(Score_Board_St, 15)
     titre_Temps_img = font_titre_Temps.render(titre_Temps, True, (255, 255, 255))
     titre_Temps_dimensions = titre_Temps_img.get_size()
-    titre_Temps_pos = [screen_size[0] / 2 - titre_Temps_dimensions[0] / 2, Temps_pos[1] + Temps_dimensions[1] + 5]
+    titre_Temps_pos = [screen_size[0] / 2 - titre_Temps_dimensions[0] / 2, Temps_pos[1] + Temps_dimensions[1]]
 
     screen.blit(titre_Temps_img, titre_Temps_pos)
 
@@ -810,17 +970,17 @@ while running :
 
     Score_player_2 = f"{score_player_2}"
     font_Score_player_2 = pygame.font.Font(Technos, 20)
-    Score_player_2_img = font_Score_player_2.render(Score_player, True, (0, 0, 255))
+    Score_player_2_img = font_Score_player_2.render(Score_player_2, True, (0, 0, 255))
     Score_player_2_dimensions = Score_player_2_img.get_size()
-    Score_player_2_pos = [screen_size[0] / 2 + Score_player_2_dimensions[0] / 2 + 100, grid_pos[1] / 2 - Score_player_2_dimensions[1] / 2]
+    Score_player_2_pos = [screen_size[0] / 2 - Score_player_2_dimensions[0] / 2 + 100, grid_pos[1] / 2 - Score_player_2_dimensions[1] / 2]
 
     screen.blit(Score_player_2_img, Score_player_2_pos)
 
     titre_Score_player_2 = "SCORE J2"
     font_titre_Score_player_2 = pygame.font.Font(Score_Board_St, 15)
-    titre_Score_player_2_img = font_titre_Score_player_2.render(titre_Score_player, True, (0, 0, 255))
+    titre_Score_player_2_img = font_titre_Score_player_2.render(titre_Score_player_2, True, (0, 0, 255))
     titre_Score_player_2_dimensions = titre_Score_player_2_img.get_size()
-    titre_Score_player_2_pos = [screen_size[0] / 2 - titre_Score_player_2_dimensions[0] / 2 - 100, Score_player_2_pos[1] / 2 - 5]
+    titre_Score_player_2_pos = [screen_size[0] / 2 - titre_Score_player_2_dimensions[0] / 2 + 100, Score_player_2_pos[1] / 2 - 5]
 
     screen.blit(titre_Score_player_2_img, titre_Score_player_2_pos)
 
