@@ -261,6 +261,8 @@ heures = 0
 minutes = 0
 secondes = 0
 
+temps_total = 0
+
 score_player = 0
 score_player_2 = 0
 
@@ -268,10 +270,10 @@ score_attribué_player = False
 score_attribué_player_2 = False
 
 frôlements_de_la_mort_qui_tue_player = 0
-frôlements_player = frôlements_de_la_mort_qui_tue_player + 0
+frôlements_player = 0
 
 frôlements_de_la_mort_qui_tue_player_2 = 0
-frôlements_player_2 = frôlements_de_la_mort_qui_tue_player_2 + 0
+frôlements_player_2 = 0
 
 def frôlement_GAUCHE(executing, traînées_finales_pos, traînées_finales_size, traînées_finales_pos_2, traînées_finales_size_2, traînées_finales_pos_3, traînées_finales_size_3, traînées_finales_pos_4, traînées_finales_size_4, player_pos, score_attribué, score, frôlements, frôlements_de_la_mort_qui_tue) :
     if executing :
@@ -469,20 +471,145 @@ def frôlement_BAS(executing, traînées_finales_pos, traînées_finales_size, t
 
     return score, frôlements, frôlements_de_la_mort_qui_tue
 
-collectibles = {
-    "type_x": 5,
-    "type_y": 5,
-    "color": "#346910",
-    "pos_x": random.randint(grid_pos[0], grid_pos[0] + grid_size[0] - 5),
-    "pos_y": random.randint(grid_pos[1], grid_pos[1] + grid_size[1] - 5),
-    "size_x": 5,
-    "size_y": 5
-}
 
-collectibles = pygame.Surface((5,5))
+collectibles = pygame.Surface((15,15))
 collectibles.fill("#346910")
-collectibles_pos = [random.randint(grid_pos[0], grid_pos[0] + grid_size[0] - 5), random.randint(grid_pos[1], grid_pos[1] + grid_size[1] - 5)]
-collectibles_size = [5, 5]
+collectibles_pos = [random.randint(grid_pos[0], grid_pos[0] + grid_size[0] - 15), random.randint(grid_pos[1], grid_pos[1] + grid_size[1] - 15)]
+collectibles_size = [15, 15]
+
+collectibles_player = 0
+collectibles_player_2 = 0
+
+def réapparition_collectibles(executing_GAUCHE, executing_DROITE, executing_HAUT, executing_BAS, grid_pos, grid_size, player_pos, player_size, collectibles_pos, collectibles_size, collectibles, score) :
+    if executing_GAUCHE :
+        if player_pos[0] <= collectibles_pos[0] + collectibles_size[0] and player_pos[0] >= collectibles_pos[0] and player_pos[1] + 24 >= collectibles_pos[1] and player_pos[1] - 1 <= collectibles_pos[1] + collectibles_size[1] :
+            score += 50
+            collectibles += 1
+            collectibles_pos = [random.randint(grid_pos[0], grid_pos[0] + grid_size[0] - 15), random.randint(grid_pos[1], grid_pos[1] + grid_size[1] - 15)]
+    if executing_DROITE :
+        if player_pos[0] + player_size[0] >= collectibles_pos[0] and player_pos[0] + player_size[0] <= collectibles_pos[0] + collectibles_size[0] and player_pos[1] + 24 >= collectibles_pos[1] and player_pos[1] - 1 <= collectibles_pos[1] + collectibles_size[1] :
+            score += 50
+            collectibles += 1
+            collectibles_pos = [random.randint(grid_pos[0], grid_pos[0] + grid_size[0] - 15), random.randint(grid_pos[1], grid_pos[1] + grid_size[1] - 15)]
+    if executing_HAUT :
+        if player_pos[1] <= collectibles_pos[1] + collectibles_size[1] and player_pos[1] >= collectibles_pos[1] and player_pos[0] + 24 >= collectibles_pos[0] and player_pos[0] - 1 <= collectibles_pos[0] + collectibles_size[0] :
+            score += 50
+            collectibles += 1
+            collectibles_pos = [random.randint(grid_pos[0], grid_pos[0] + grid_size[0] - 15), random.randint(grid_pos[1], grid_pos[1] + grid_size[1] - 15)]
+    if executing_BAS :
+        if player_pos[1] + player_size[1] >= collectibles_pos[1] and player_pos[1] + player_size[1] <= collectibles_pos[1] + collectibles_size[1] and player_pos[0] + 24 >= collectibles_pos[0] and player_pos[0] - 1 <= collectibles_pos[0] + collectibles_size[0] :
+            score += 50
+            collectibles += 1
+            collectibles_pos = [random.randint(grid_pos[0], grid_pos[0] + grid_size[0] - 15), random.randint(grid_pos[1], grid_pos[1] + grid_size[1] - 15)]
+
+    return score, collectibles, collectibles_pos
+
+
+
+succès_temps_1_player = False
+succès_temps_2_player = False
+succès_temps_3_player = False
+succès_temps_caché_player = False
+
+succès_score_1_player = False
+succès_score_2_player = False
+succès_score_3_player = False
+succès_score_caché_player = False
+
+succès_frôlements_1_player = False
+succès_frôlements_2_player = False
+succès_frôlements_3_player = False
+succès_frôlements_caché_player = False
+
+succès_collectibles_1_player = False
+succès_collectibles_2_player = False
+succès_collectibles_3_player = False
+succès_collectibles_caché_player = False
+
+
+succès_temps_1_player_2 = False
+succès_temps_2_player_2 = False
+succès_temps_3_player_2 = False
+succès_temps_caché_player_2 = False
+
+succès_score_1_player_2 = False
+succès_score_2_player_2 = False
+succès_score_3_player_2 = False
+succès_score_caché_player_2 = False
+
+succès_frôlements_1_player_2 = False
+succès_frôlements_2_player_2 = False
+succès_frôlements_3_player_2 = False
+succès_frôlements_caché_player_2 = False
+
+succès_collectibles_1_player_2 = False
+succès_collectibles_2_player_2 = False
+succès_collectibles_3_player_2 = False
+succès_collectibles_caché_player_2 = False
+
+def succès_temps(temps_total, succès_temps_1_player, succès_temps_1_player_2, succès_temps_2_player, succès_temps_2_player_2, succès_temps_3_player, succès_temps_3_player_2, succès_temps_caché_player, succès_temps_caché_player_2) :
+    if temps_total >= 30 :
+        succès_temps_1_player = True
+        succès_temps_1_player_2 = True
+
+    if temps_total >= 60 :
+        succès_temps_2_player = True
+        succès_temps_2_player_2 = True
+
+    if temps_total >= 150 :
+        succès_temps_3_player = True
+        succès_temps_3_player_2 = True
+
+    if temps_total >= 300 :
+        succès_temps_caché_player = True
+        succès_temps_caché_player_2 = True
+
+    return succès_temps_1_player, succès_temps_1_player_2, succès_temps_2_player, succès_temps_2_player_2, succès_temps_3_player, succès_temps_3_player_2, succès_temps_caché_player, succès_temps_caché_player_2
+
+def succès_score(score_player, succès_score_1, succès_score_2, succès_score_3, succès_score_caché) :
+    if score_player >= 100 :
+        succès_score_1 = True
+    
+    if score_player >= 500 :
+        succès_score_2 = True
+
+    if score_player >= 1000 :
+        succès_score_3 = True
+
+    if score_player >= 8888 :
+        succès_score_caché = True
+
+    return succès_score_1, succès_score_2, succès_score_3, succès_score_caché
+
+def succès_frôlements(frôlements_player, succès_frôlements_1, succès_frôlements_2, succès_frôlements_3, succès_frôlements_caché) :
+    if frôlements_player >= 5 :
+        succès_frôlements_1 = True
+
+    if frôlements_player >= 10 :
+        succès_frôlements_2 = True
+
+    if frôlements_player >= 25 :
+        succès_frôlements_3 = True
+
+    if frôlements_player >= 50 :
+        succès_frôlements_caché = True
+
+    return succès_frôlements_1, succès_frôlements_2, succès_frôlements_3, succès_frôlements_caché
+
+def succès_collectibles(collectibles_player, succès_collectibles_1, succès_collectibles_2, succès_collectibles_3, succès_collectibles_caché) :
+    if collectibles_player >= 1 :
+        succès_collectibles_1 = True
+
+    if collectibles_player >= 5 :
+        succès_collectibles_2 = True
+
+    if collectibles_player >= 10 :
+        succès_collectibles_3 = True
+
+    if collectibles_player >= 25 :
+        succès_collectibles_caché = True
+
+    return succès_collectibles_1, succès_collectibles_2, succès_collectibles_3, succès_collectibles_caché
 
 
 
@@ -916,6 +1043,14 @@ while running :
         i.fill(traînées["color"])
         screen.blit(i, j)
 
+
+    screen.blit(player, player_pos)
+    screen.blit(player_2, player_pos_2)
+
+    #-----------------------------------------------------------------------------------------------------------------------------------------------------------
+    #------------------------------------------------------------------------STATISTIQUES-----------------------------------------------------------------------
+    #-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
     secondes += 1/60
     
     if secondes == 60 :
@@ -930,10 +1065,7 @@ while running :
         score_player += 10000
         score_player_2 += 10000
 
-
-    screen.blit(player, player_pos)
-    screen.blit(player_2, player_pos_2)
-
+    #--------------------------------------------------------------------------AFFICHAGE------------------------------------------------------------------------
 
     Temps = f"{heures} : {minutes} : {round(secondes)}"
     font_Temps = pygame.font.Font(digital_7, 30)
@@ -983,6 +1115,30 @@ while running :
     titre_Score_player_2_pos = [screen_size[0] / 2 - titre_Score_player_2_dimensions[0] / 2 + 100, Score_player_2_pos[1] / 2 - 5]
 
     screen.blit(titre_Score_player_2_img, titre_Score_player_2_pos)
+
+    
+    score_player, collectibles_player, collectibles_pos = réapparition_collectibles(executing_lightcycle_movement_q, executing_lightcycle_movement_d , executing_lightcycle_movement_z, executing_lightcycle_movement_s, grid_pos, grid_size, player_pos, player_size, collectibles_pos, collectibles_size, collectibles_player, score_player)
+    score_player_2, collectibles_player_2, collectibles_pos = réapparition_collectibles(executing_lightcycle_movement_left, executing_lightcycle_movement_right, executing_lightcycle_movement_up, executing_lightcycle_movement_down, grid_pos, grid_size, player_pos_2, player_size_2, collectibles_pos, collectibles_size, collectibles_player_2, score_player_2)
+
+    screen.blit(collectibles, collectibles_pos)
+
+    #------------------------------------------------------------------CALCULS DE FIN DE PARTIE-----------------------------------------------------------------
+
+    temps_total = heures * 3600 + minutes * 60 + secondes
+
+    frôlements_player += frôlements_de_la_mort_qui_tue_player
+    frôlements_player_2 += frôlements_de_la_mort_qui_tue_player_2
+
+    succès_temps_1_player, succès_temps_1_player_2, succès_temps_2_player, succès_temps_2_player_2, succès_temps_3_player, succès_temps_3_player_2, succès_temps_caché_player, succès_temps_caché_player_2 = succès_temps(temps_total, succès_temps_1_player, succès_temps_1_player_2, succès_temps_2_player, succès_temps_2_player_2, succès_temps_3_player, succès_temps_3_player_2, succès_temps_caché_player, succès_temps_caché_player_2)
+
+    succès_score_1_player, succès_score_2_player, succès_score_3_player, succès_score_caché_player = succès_score(score_player, succès_score_1_player, succès_score_2_player, succès_score_3_player, succès_score_caché_player)
+    succès_score_1_player_2, succès_score_2_player_2, succès_score_3_player_2, succès_score_caché_player_2 = succès_score(score_player_2, succès_score_1_player_2, succès_score_2_player_2, succès_score_3_player_2, succès_score_caché_player_2)
+
+    succès_frôlements_1_player, succès_frôlements_2_player, succès_frôlements_3_player, succès_frôlements_caché_player = succès_frôlements(frôlements_player, succès_frôlements_1_player, succès_frôlements_2_player, succès_frôlements_3_player, succès_frôlements_caché_player)
+    succès_frôlements_1_player_2, succès_frôlements_2_player_2, succès_frôlements_3_player_2, succès_frôlements_caché_player_2 = succès_frôlements(frôlements_player_2, succès_frôlements_1_player_2, succès_frôlements_2_player_2, succès_frôlements_3_player_2, succès_frôlements_caché_player_2)
+
+    succès_collectibles_1_player, succès_collectibles_2_player, succès_collectibles_3_player, succès_collectibles_caché_player = succès_collectibles(collectibles_player, succès_collectibles_1_player, succès_collectibles_2_player, succès_collectibles_3_player, succès_collectibles_caché_player)
+    succès_collectibles_1_player_2, succès_collectibles_2_player_2, succès_collectibles_3_player_2, succès_collectibles_caché_player_2 = succès_collectibles(collectibles_player_2, succès_collectibles_1_player_2, succès_collectibles_2_player_2, succès_collectibles_3_player_2, succès_collectibles_caché_player_2)
 
 
     pygame.display.flip()
